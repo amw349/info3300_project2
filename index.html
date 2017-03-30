@@ -1,0 +1,66 @@
+<html>
+<head>
+<title>P2</title>
+<link href="https://fonts.googleapis.com/css?family=Alegreya|Alegreya+Sans" rel="stylesheet">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/default.min.css">
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="http://d3js.org/topojson.v2.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
+<style>
+body { font-family: 'Alegreya Sans', Calibri, sans-serif; }
+svg { border: solid #ccc 1px; }
+path.country { fill: #ccc; stroke: #888;; }
+</style>
+</head>
+<body>
+<svg height="450" width="1000">
+</svg>
+
+
+<script id="make_map">
+
+var svg = d3.select("svg");
+svg.append("text")
+.attr("id", "CountryName")
+.attr("x", 10)
+.attr("y", 28)
+.style("font-size", "18pt");
+
+var projection = d3.geoMercator().scale(100).translate([500,300]);
+var pathGenerator = d3.geoPath().projection(projection);
+
+var rawData;
+var countries;
+
+
+//code based from lecture and http://www.tnoda.com/blog/2013-12-07
+//data from https://raw.githubusercontent.com/yaph/d3-geomap/master/src/topojson/world/countries.json
+d3.json("world.json", function (error, data) {
+	rawData = data;
+	
+	countries = topojson.feature(rawData, rawData.objects.units);
+	svg.append("g")
+    .attr("id", "countries")
+    .selectAll("path.country")
+    .data(countries.features)
+    .enter()
+    .append("path")
+    .attr("class", "country")
+    .attr("id", function(d) { return d.properties.name; })
+    .attr("d", function (country) {
+        if(country.properties.name != "Antarctica")
+    	return pathGenerator(country);
+    })
+    .on("mouseover", function(country){
+        	this.style.opacity = 0.7
+        	svg.select("#CountryName").text(country.properties.name);
+
+        })
+    .on("mouseout", function(country){
+        	this.style.opacity = 1;
+    	})
+    ;
+});
+</script>
+</body>
+</html>
