@@ -63,15 +63,11 @@ var countries;
 
 d3.queue()
 .defer(d3.json, "world.json")
-.defer(d3.csv, ".csv")
+.defer(d3.csv, "birth_control_country_data.csv")
 .await(function (error, worldData, csvData) {
 
 	geoData = worldData;
 	contraData = csvData;
-
-
-
-
 
 	
 	countries = topojson.feature(geoData, geoData.objects.units);
