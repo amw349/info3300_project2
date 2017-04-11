@@ -3,18 +3,40 @@
 <title>P2</title>
 <link href="https://fonts.googleapis.com/css?family=Alegreya|Alegreya+Sans" rel="stylesheet">
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/default.min.css">
+<link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script src="http://d3js.org/topojson.v2.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
 <style>
-body { font-family: 'Alegreya Sans', Calibri, sans-serif; }
-svg { border: solid #ccc 1px; }
+body { font-family: 'Alegreya Sans', Calibri, sans-serif; margin: auto; background-color: #444444;}
+svg { border: solid #ccc 1px; background-color: white; box-shadow: 5px 10px 50px white;}
 path.country { fill: #ccc; stroke: #888;; }
+#mainCenter {
+    margin: auto;
+    text-align: center;
+}
+h1 {
+    color: white;
+    box-shadow: 5px 10px 50px white
+}
 </style>
 </head>
 <body>
-<svg height="450" width="1000">
+
+<div id="mainCenter">
+    <h1><br>
+        Effect of Contraceptive Prevalence on the Percent of <br> Females Who Complete Primary School
+    </h1>
+
+<svg height="650" width="1400">
 </svg>
+    <!-- adapted from w3schools -->
+    <form method="post" action="/action_page_post.php">
+      <label for="points">Percentage of Women with Access to Birth Control:</label><br>
+      <input type="range" name="points" id="points" value="50" min="0" max="100">
+      <input type="submit" data-inline="true" value="Submit">
+    </form>
+</div>
 
 
 <script id="make_map">
@@ -26,7 +48,7 @@ svg.append("text")
 .attr("y", 28)
 .style("font-size", "18pt");
 
-var projection = d3.geoMercator().scale(100).translate([500,300]);
+var projection = d3.geoMercator().scale(150).translate([675,450]);
 var pathGenerator = d3.geoPath().projection(projection);
 
 var geoData;
