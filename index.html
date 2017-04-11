@@ -29,16 +29,33 @@ svg.append("text")
 var projection = d3.geoMercator().scale(100).translate([500,300]);
 var pathGenerator = d3.geoPath().projection(projection);
 
-var rawData;
+var geoData;
+var contraData;
 var countries;
+
+
 
 
 //code based from lecture and http://www.tnoda.com/blog/2013-12-07
 //data from https://raw.githubusercontent.com/yaph/d3-geomap/master/src/topojson/world/countries.json
-d3.json("world.json", function (error, data) {
-	rawData = data;
+
+d3.queue()
+.defer(d3.json, "world.json")
+.defer(d3.csv, ".csv")
+.await(function (error, worldData, csvData) {
+
+	geoData = worldData;
+	contraData = csvData;
+
+	contraData.foreach(function(d){
+
+
+	});
+
+
+
 	
-	countries = topojson.feature(rawData, rawData.objects.units);
+	countries = topojson.feature(geoData, geoData.objects.units);
 	svg.append("g")
     .attr("id", "countries")
     .selectAll("path.country")
@@ -60,7 +77,10 @@ d3.json("world.json", function (error, data) {
         	this.style.opacity = 1;
     	})
     ;
-});
+
+})
+
+
 </script>
 </body>
 </html>
