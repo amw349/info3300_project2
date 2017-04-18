@@ -88,14 +88,43 @@ var contraData;
 var countries;
 
 
-
+function parseLine(line) {
+	return {
+	  Country: line["Country"],
+	  1990: Number(line["1990"]),
+	  1991: Number(line["1991"]),
+	  1992: Number(line["1992"]),
+	  1993: Number(line["1993"]),
+	  1994: Number(line["1994"]),
+	  1995: Number(line["1995"]),
+	  1996: Number(line["1996"]),
+	  1997: Number(line["1997"]),
+	  1998: Number(line["1998"]),
+	  1999: Number(line["1999"]),
+	  2000: Number(line["2000"]),
+	  2001: Number(line["2001"]),
+	  2002: Number(line["2002"]),
+	  2003: Number(line["2003"]),
+	  2004: Number(line["2004"]),
+	  2005: Number(line["2005"]),
+	  2006: Number(line["2006"]),
+	  2007: Number(line["2007"]),
+	  2008: Number(line["2008"]),
+	  2009: Number(line["2009"]),
+	  2010: Number(line["2010"]),
+	  2011: Number(line["2011"]),
+	  2012: Number(line["2012"]),
+	  2013: Number(line["2013"]),
+	  2014: Number(line["2014"])
+	};
+};
 
 //code based from lecture and http://www.tnoda.com/blog/2013-12-07
 //data from https://raw.githubusercontent.com/yaph/d3-geomap/master/src/topojson/world/countries.json
 
 d3.queue()
 .defer(d3.json, "world.json")
-.defer(d3.csv, "birth_control_country_data.csv")
+.defer(d3.csv, "birth_control_country_data.csv", parseLine)
 .await(function (error, worldData, csvData) {
 
 	geoData = worldData;
@@ -124,7 +153,7 @@ d3.queue()
         	this.style.opacity = 1;
     	})
     .style("fill", function(d) {
-    	//CHANGE use data from contraData
+    	//CHANGE use data from contraData to get different shadings
     	//something like
     	//return color (pairRateWithId[d.id]);
     	//https://suffenus.wordpress.com/2014/01/07/making-interactive-maps-with-d3-for-total-beginners/
