@@ -38,7 +38,7 @@ h1 {
 
 <svg height="650" width="1400">
 </svg>
-    <input type="range" name='politics' min="0" max="90" value="0" step="1" style='width:420px' onchange="showValue(this.value)" />
+    <input type="range" name='politics' min="0" max="90" value="0" step="1" style='width:420px' onchange="showValue(this.value); takeValue(this.value);" />
     <span id="range">&nbsp; &nbsp; &nbsp; &nbsp; 0%</span>
     <script type="text/javascript">
     function showValue(newValue)
