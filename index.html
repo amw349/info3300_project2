@@ -14,6 +14,8 @@ path.country { fill: #ccc; stroke: #888;; }
 #mainCenter {
     margin: auto;
     text-align: center;
+    color: white;
+    font-size: 20px;
 }
 h1 {
     color: white;
@@ -30,12 +32,22 @@ h1 {
 
 <svg height="650" width="1400">
 </svg>
-    <!-- adapted from w3schools -->
-    <form method="post" action="/action_page_post.php">
-      <label for="points">Percentage of Women with Access to Birth Control:</label><br>
-      <input type="range" name="points" id="points" value="50" min="0" max="100">
-      <input type="submit" data-inline="true" value="Submit">
-    </form>
+    <input type="range" name='politics' min="0" max="90" value="0" step="1" style='width:420px' onchange="showValue(this.value)" />
+    <span id="range">&nbsp; &nbsp; &nbsp; &nbsp; 0%</span>
+    <script type="text/javascript">
+    function showValue(newValue)
+    {
+        var percentSign = "%";
+        var percent = String(newValue);
+        var total = percent.concat(percentSign);
+        document.getElementById("range").innerHTML= total;
+    }
+    </script>
+    <br>
+    <br>
+    The graph above shows the relationship between access to contraceptives and the percentage of females who complete primary school.
+    <br>
+    Use the slider to select a percentage of women who have access to 
 </div>
 
 
@@ -96,7 +108,7 @@ d3.queue()
     	//something like
     	//return color (pairRateWithId[d.id]);
     	//https://suffenus.wordpress.com/2014/01/07/making-interactive-maps-with-d3-for-total-beginners/
-    	return "blue";
+    	return "light grey";
     })
     ;
 
