@@ -1,7 +1,7 @@
 <html>
 <head>
 <title>P2</title>
-<link href="https://fonts.googleapis.com/css?family=Alegreya|Alegreya+Sans" rel="stylesheet">
+<!--<link href="https://fonts.googleapis.com/css?family=Alegreya|Alegreya+Sans" rel="stylesheet"> -->
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/default.min.css">
 <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
 <script src="https://d3js.org/d3.v4.min.js"></script>
@@ -22,6 +22,21 @@ path.country { fill: #ccc; stroke: #888;; }
     text-align: center;
     color: white;
     font-size: 25px;   
+}
+#contraceptiveSlider {
+    display: block;
+    margin: auto;
+    margin-bottom: 10%;
+}
+#showingYears {
+    position: absolute;
+    margin-top: 32%;
+    font-size: 30px;
+    color: black;
+    font-family: 'Alegreya Sans', Calibri, sans-serif;
+    display: block;
+    padding-left: 12%;
+    font-weight: bolder;
 }
 h1 {
     color: white;
@@ -60,8 +75,6 @@ h1 {
         <br>
         <br>
     </div>
-</div>
-
 
 <script>
 
@@ -92,6 +105,8 @@ function takeValue(newValue) {
 			firstYear[d.Country] = 0;
 		}
 	});
+    console.log("calling usevalues hopefully");
+    useValues(firstYear);
 }
 
 // wait function from endmemo.com
@@ -104,6 +119,7 @@ while(d2-d < ms);
 }
 
 function useValues(yearDictionary) {
+    console.log("called useValues");
     // looping through the years we want to display
     var theYears = [0, 5, 7, 10, 15];
     for (year = 0; year < theYears.length; year++) {
@@ -112,25 +128,26 @@ function useValues(yearDictionary) {
         
         // replacing 'after XX years' svg element
         var first = "After ";
-        if (theYears == 5) {
+        if (theYears[year] == 5) {
             toWord = "Five";
         }
-        else if (theYears == 10) {
+        else if (theYears[year] == 10) {
             toWord = "Ten";
         }
-        else if (theYears == 7) {
+        else if (theYears[year] == 7) {
             toWord = "Seven";
         }
-        else if (theYears == 15) {
+        else if (theYears[year] == 15) {
             toWord = "Fifteen";
         }
-        else if (theYears ==0) {
+        else if (theYears[year] ==0) {
         	toWord = "Zero";
         }
         var second = first.concat(toWord);
         var third = " Years"
         var last = second.concat(third)
-        svg.select("#yearsAfter").text(last);
+        console.log("trying to display: " + last);
+        document.selectElementById("showingYears").innerHTML = last;
 
 
         // (needs loop) for each country in dict, take value, add the yearsPlus int, and find country's
@@ -233,6 +250,7 @@ d3.queue()
 
     contraceptiveSlider.oninput = function() {
         console.log(contraceptiveSlider.value);
+        takeValue(contraceptiveSlider.value);
      };
 
 
@@ -254,5 +272,11 @@ d3.queue()
 
 
 </script>
+    <br>
+        <div id="showingYears">
+        After Fifteen Years
+    </div>
+    </div>
+    <br><br>
 </body>
 </html>
