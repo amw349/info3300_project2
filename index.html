@@ -122,6 +122,56 @@ function takeValue(newValue) {
 	});
 }
 
+// wait function from endmemo.com
+function wait(ms)
+{
+var d = new Date();
+var d2 = null;
+do { d2 = new Date(); }
+while(d2-d < ms);
+}
+
+function useValues(yearDictionary) {
+    // looping through the years we want to display
+    var theYears = [5, 7, 10, 15];
+    for (year = 0; year < theYears.length; year++) {
+        var yearsPlus = parseInt(theYears[year]);
+        var toWord;
+        
+        // replacing 'after XX years' svg element
+        var first = "After ";
+        if (theYears == 5) {
+            toWord = "Five";
+        }
+        else if (theYears == 10) {
+            toWord = "Ten";
+        }
+        else if (theYears == 7) {
+            toWord = "Seven";
+        }
+        else if (theYears == 15) {
+            toWord = "Fifteen";
+        }
+        var second = first.concat(toWord);
+        var third = " Years"
+        var last = second.concat(third)
+        svg.select("#yearsAfter").text(last);
+
+
+        // (needs loop) for each country in dict, take value, add the yearsPlus int, and find country's
+        // enrollment ratio 
+
+
+        // put that ratio in the map
+
+
+
+        // pausing for 5 seconds before displaying the next year
+        // (using wait function from endmemo.com)
+        wait(5000);
+    }
+}
+
 
 function parseLine(line) {
 	return {
