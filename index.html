@@ -209,7 +209,7 @@ function parseLine(line) {
 
 d3.queue()
 .defer(d3.json, "world.json")
-.defer(d3.csv, "birth_control_country_data.csv", parseLine)
+.defer(d3.csv, "birth_control_country_data.csv?v1", parseLine)
 .await(function (error, worldData, csvData) {
 
 	geoData = worldData;
@@ -244,9 +244,7 @@ d3.queue()
     	//return color (pairRateWithId[d.id]);
     	//https://suffenus.wordpress.com/2014/01/07/making-interactive-maps-with-d3-for-total-beginners/
     	return "light grey";
-    })
-    ;
-
+    });
 })
 
 
