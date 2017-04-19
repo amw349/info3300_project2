@@ -133,7 +133,7 @@ while(d2-d < ms);
 
 function useValues(yearDictionary) {
     // looping through the years we want to display
-    var theYears = [5, 7, 10, 15];
+    var theYears = [0, 5, 7, 10, 15];
     for (year = 0; year < theYears.length; year++) {
         var yearsPlus = parseInt(theYears[year]);
         var toWord;
@@ -151,6 +151,9 @@ function useValues(yearDictionary) {
         }
         else if (theYears == 15) {
             toWord = "Fifteen";
+        }
+        else if (theYears ==0) {
+        	toWord = "Zero";
         }
         var second = first.concat(toWord);
         var third = " Years"
