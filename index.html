@@ -147,7 +147,7 @@ function useValues(yearDictionary) {
         var third = " Years"
         var last = second.concat(third)
         console.log("trying to display: " + last);
-        document.selectElementById("showingYears").innerHTML = last;
+        document.getElementById("showingYears").textContent = last;
 
 
         // (needs loop) for each country in dict, take value, add the yearsPlus int, and find country's
