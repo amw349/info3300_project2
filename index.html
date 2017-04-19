@@ -11,7 +11,7 @@
 body { font-family: 'Alegreya Sans', Calibri, sans-serif; margin: auto; background-color: #444444;}
 svg { border: solid #ccc 1px; background-color: white; box-shadow: 5px 10px 50px white;}
 path.country { fill: #ccc; stroke: #888;; }
-#mainCenter {
+#contentWrapper {
     margin: auto;
     text-align: center;
     color: white;
@@ -31,21 +31,14 @@ h1 {
 </head>
 <body>
 
-<div id="mainCenter">
-    <h1><br>
-        Effect of Contraceptive Prevalence on the Percentage of College <br>
-        Students Who Are Female
-    </h1>
+<div id="contentWrapper">
+    <div id="header">
+        <h1><br>
+            Effect of Contraceptive Prevalence on the Percentage of College <br>
+            Students Who Are Female
+        </h1>
+    </div>
 
-<svg height="650" width="1400">
-</svg>
-    <input type="range" name='politics' min="0" max="90" value="0" step="1" style='width:420px' onchange="showValue(this.value); takeValue(this.value);" />
-    <span id="range">&nbsp; &nbsp; &nbsp; &nbsp; 0%</span>
-    <script type="text/javascript">
-    function showValue(newValue){
-        document.getElementById("range").innerHTML = String(newValue).concat("%");
-    }
-    </script>
     <br>
     <br>
     <div id="explanationText">
@@ -70,28 +63,7 @@ h1 {
 </div>
 
 
-<script id="make_map">
-
-var svg = d3.select("svg");
-svg.append("text")
-.attr("id", "CountryName")
-.attr("x", 10)
-.attr("y", 28)
-.style("font-size", "18pt");
-
-svg.append("text")
-.attr("id", "FirstYear")
-.attr("x", 10)
-.attr("y", 48)
-.style("font-size", "18pt");
-
-svg.append("text")
-.attr("id", "yearsAfter")
-.attr("x", 80)
-.attr("y", 600)
-.style("font-size", "30pt");
-svg.select("#yearsAfter").text("After Fifteen Years");
-
+<script>
 
 var projection = d3.geoMercator().scale(150).translate([675,450]);
 var pathGenerator = d3.geoPath().projection(projection);
@@ -176,48 +148,38 @@ function useValues(yearDictionary) {
 }
 
 
-function parseLine(line) {
-	return {
-	  Country: line["Country"],
-	  Rate: [Number(line["1990"]),
-	  Number(line["1991"]),
-	  Number(line["1992"]),
-	  Number(line["1993"]),
-	  Number(line["1994"]),
-	  Number(line["1995"]),
-	  Number(line["1996"]),
-	  Number(line["1997"]),
-	  Number(line["1998"]),
-	  Number(line["1999"]),
-	  Number(line["2000"]),
-	  Number(line["2001"]),
-	  Number(line["2002"]),
-	  Number(line["2003"]),
-	  Number(line["2004"]),
-	  Number(line["2005"]),
-	  Number(line["2006"]),
-	  Number(line["2007"]),
-	  Number(line["2008"]),
-	  Number(line["2009"]),
-	  Number(line["2010"]),
-	  Number(line["2011"]),
-	  Number(line["2012"]),
-	  Number(line["2013"]), 
-	  Number(line["2014"])]
-	};
-};
+
+function parse(row){
+    // version 1:
+    for (i in row) {
+        if (i != "Country") {
+            row[i] = Number(row[i]);
+        }
+    }
+    return row
+}
 
 //code based from lecture and http://www.tnoda.com/blog/2013-12-07
 //data from https://raw.githubusercontent.com/yaph/d3-geomap/master/src/topojson/world/countries.json
 
 d3.queue()
 .defer(d3.json, "world.json")
-.defer(d3.csv, "birth_control_country_data.csv?v1", parseLine)
+.defer(d3.csv, "birth_control_country_data.csv?v1", parse)
 .await(function (error, worldData, csvData) {
 
 	geoData = worldData;
 	contraData = csvData;
 
+    var svg = d3.select("#contentWrapper")
+        .append("svg")
+        .attr("height", "650")
+        .attr("width", "1400");
+
+    svg.append("text")
+        .attr("id", "CountryName")
+        .attr("x", 10)
+        .attr("y", 28)
+        .style("font-size", "18pt");
 	
 	countries = topojson.feature(geoData, geoData.objects.units);
 	svg.append("g")
@@ -235,7 +197,7 @@ d3.queue()
     .on("mouseover", function(country){
         	this.style.opacity = 0.7
         	svg.select("#CountryName").text(country.properties.name);
-        	svg.select("#FirstYear").text(firstYear[country.properties.name])
+        	// svg.select("#FirstYear").text(firstYear[country.properties.name])
 
         })
     .on("mouseout", function(country){
@@ -248,6 +210,46 @@ d3.queue()
     	//https://suffenus.wordpress.com/2014/01/07/making-interactive-maps-with-d3-for-total-beginners/
     	return "light grey";
     });
+
+    var slider = d3.select("body")
+            .append("div")
+            .attr("id", "slider")
+
+    slider.append("text")
+            .append("input")            
+            .attr("type", "range")
+            .attr("name", "contraceptiveSlider")
+            .attr("min", "0")
+            .attr("max", "90")
+            .attr("value", "0") // default/starting value
+            .attr("step", "1")
+            .attr("id", "contraceptiveSlider")
+            .style("width", "420px")
+            .on("input", function() { 
+                value = this.value;
+            });
+
+    var contraceptiveSlider = document.getElementById("contraceptiveSlider")
+
+    contraceptiveSlider.oninput = function() {
+        console.log(contraceptiveSlider.value);
+     };
+
+
+    // svg.append("text")
+    // .attr("id", "FirstYear")
+    // .attr("x", 10)
+    // .attr("y", 48)
+    // .style("font-size", "18pt");
+
+    // svg.append("text")
+    // .attr("id", "yearsAfter")
+    // .attr("x", 80)
+    // .attr("y", 600)
+    // .style("font-size", "30pt");
+    // svg.select("#yearsAfter").text("After Fifteen Years");
+
+
 })
 
 
