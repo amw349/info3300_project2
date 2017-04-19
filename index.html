@@ -75,6 +75,7 @@ var firstYear;
 
 function takeValue(newValue) {
 	firstYear = {};
+
 	var percentageAchieved;
 	contraData.forEach(function(d) {
 		percentageAchieved = false;
@@ -97,10 +98,10 @@ function takeValue(newValue) {
 // wait function from endmemo.com
 function wait(ms)
 {
-var d = new Date();
-var d2 = null;
-do { d2 = new Date(); }
-while(d2-d < ms);
+    var d = new Date();
+    var d2 = null;
+    do { d2 = new Date(); }
+    while (d2-d < ms);
 }
 
 function useValues(yearDictionary) {
@@ -147,8 +148,6 @@ function useValues(yearDictionary) {
     } // end loop
 }
 
-
-
 function parse(row){
     // version 1:
     for (i in row) {
@@ -183,33 +182,32 @@ d3.queue()
 	
 	countries = topojson.feature(geoData, geoData.objects.units);
 	svg.append("g")
-    .attr("id", "countries")
-    .selectAll("path.country")
-    .data(countries.features)
-    .enter()
-    .append("path")
-    .attr("class", "country")
-    .attr("id", function(d) { return d.properties.name; })
-    .attr("d", function (country) {
-        if(country.properties.name != "Antarctica")
-    	return pathGenerator(country);
-    })
-    .on("mouseover", function(country){
-        	this.style.opacity = 0.7
-        	svg.select("#CountryName").text(country.properties.name);
-        	// svg.select("#FirstYear").text(firstYear[country.properties.name])
-
+        .attr("id", "countries")
+        .selectAll("path.country")
+        .data(countries.features)
+        .enter()
+        .append("path")
+        .attr("class", "country")
+        .attr("id", function(d) { return d.properties.name; })
+        .attr("d", function (country) {
+            if(country.properties.name != "Antarctica")
+        	return pathGenerator(country);
         })
-    .on("mouseout", function(country){
-        	this.style.opacity = 1;
-    	})
-    .style("fill", function(d) {
-    	//CHANGE use data from contraData to get different shadings
-    	//something like
-    	//return color (pairRateWithId[d.id]);
-    	//https://suffenus.wordpress.com/2014/01/07/making-interactive-maps-with-d3-for-total-beginners/
-    	return "light grey";
-    });
+        .on("mouseover", function(country){
+            this.style.opacity = 0.7
+        	svg.select("#CountryName").text(country.properties.name);
+            // svg.select("#FirstYear").text(firstYear[country.properties.name])
+        })
+        .on("mouseout", function(country){
+            this.style.opacity = 1;
+        })
+        .style("fill", function(d) {
+        	//CHANGE use data from contraData to get different shadings
+        	//something like
+        	//return color (pairRateWithId[d.id]);
+        	//https://suffenus.wordpress.com/2014/01/07/making-interactive-maps-with-d3-for-total-beginners/
+        	return "light grey";
+        });
 
     var slider = d3.select("body")
             .append("div")
@@ -233,8 +231,7 @@ d3.queue()
 
     contraceptiveSlider.oninput = function() {
         console.log(contraceptiveSlider.value);
-     };
-
+    };
 
     // svg.append("text")
     // .attr("id", "FirstYear")
