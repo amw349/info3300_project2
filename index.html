@@ -8,19 +8,19 @@
 <script src="http://d3js.org/topojson.v2.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
 <style>
-body { font-family: 'Alegreya Sans', Calibri, sans-serif; margin: auto; background-color: #444444;}
+/*body { font-family: 'Alegreya Sans', Calibri, sans-serif; margin: auto; background-color: #444444;}*/
 svg { border: solid #ccc 1px; background-color: white; box-shadow: 5px 10px 50px white;}
 path.country { fill: #ccc; stroke: #888;; }
 #mainCenter {
     margin: auto;
     text-align: center;
-    color: white;
+    /*color: white;*/
     font-size: 20px;
 }
 #explanationText {
     margin: auto;
     text-align: center;
-    color: white;
+    /*color: white;*/
     font-size: 25px;   
 }
 h1 {
@@ -41,12 +41,8 @@ h1 {
     <input type="range" name='politics' min="0" max="90" value="0" step="1" style='width:420px' onchange="showValue(this.value)" />
     <span id="range">&nbsp; &nbsp; &nbsp; &nbsp; 0%</span>
     <script type="text/javascript">
-    function showValue(newValue)
-    {
-        var percentSign = "%";
-        var percent = String(newValue);
-        var total = percent.concat(percentSign);
-        document.getElementById("range").innerHTML= total;
+    function showValue(newValue){
+        document.getElementById("range").innerHTML = String(newValue).concat("%");
     }
     </script>
     <br>
