@@ -83,11 +83,13 @@ var pathGenerator = d3.geoPath().projection(projection);
 
 var geoData;
 var contraData;
+var enrollData = {};
 var countries;
 var firstYear;
 
 function takeValue(newValue) {
 	firstYear = {};
+
 	var percentageAchieved;
 	contraData.forEach(function(d) {
 		percentageAchieved = false;
@@ -99,10 +101,10 @@ function takeValue(newValue) {
 			year += 1;
 		};
 		if(percentageAchieved){
-			firstYear[d.Country] = 1990 + year;
+			firstYear[d.ID] = 1990 + year;
 		}
 		else {
-			firstYear[d.Country] = 0;
+			firstYear[d.ID] = 0;
 		}
 	});
     console.log("calling usevalues hopefully");
@@ -112,10 +114,10 @@ function takeValue(newValue) {
 // wait function from endmemo.com
 function wait(ms)
 {
-var d = new Date();
-var d2 = null;
-do { d2 = new Date(); }
-while(d2-d < ms);
+    var d = new Date();
+    var d2 = null;
+    do { d2 = new Date(); }
+    while (d2-d < ms);
 }
     
 function yearShow() {
@@ -178,32 +180,49 @@ function useValues(yearDictionary) {
 
         // (needs loop) for each country in dict, take value, add the yearsPlus int, and find country's
         // enrollment ratio 
-
+        // console.log(yearDictionary)
+        // for(key in yearDictionary){
+        // 	var yearAchieved = yearDictionary[key];
+        // 	console.log(key);
+        // 	console.log(yearAchieved);
+        // 	console.log(enrollData[key])
+        // 	//console.log(enrollData[key][yearAchieved - 1990 + yearsPlus])
+        // }
 
         // put that ratio in the map
+
+        for(key in yearDictionary){
+        	var yearAchieved = yearDictionary[key];
+        	var yearSelected = yearAchieved - 1990 + yearsPlus;
+        	console.log(key);
+        	console.log(yearAchieved);
+        	console.log(yearSelected);
+        	console.log(enrollData[key]);
+        	if (enrollData[key] != undefined && yearSelected < enrollData[key].length){
+        		var enrollPercent = enrollData[key][yearSelected];
+        		console.log(enrollPercent)
+    		}
+        }
 
 
 
         // pausing for 5 seconds before displaying the next year
         // (using wait function from endmemo.com)
+
         wait(1000);
     } // end loop
 }
-
-
 
 function parse(row){
     // version 1:
     var rate = []
     for (i in row) {
-        if (i != "Country") {
+        if (i != "Country" && i != "ID") {
             row[i] = Number(row[i]);
             rate.push(Number(row[i]));
         }
     }
-    console.log(row);
     row["Rate"] = rate;
-    console.log(row);
     return row
 }
 
@@ -213,10 +232,15 @@ function parse(row){
 d3.queue()
 .defer(d3.json, "world.json")
 .defer(d3.csv, "birth_control_country_data.csv?v1", parse)
-.await(function (error, worldData, csvData) {
+.defer(d3.csv, "enrollment.csv?v2", parse)
+.await(function (error, worldData, csvData, csvData2) {
 
 	geoData = worldData;
 	contraData = csvData;
+
+	csvData2.forEach(function(d) {
+		enrollData[d.ID] = d.Rate;
+	})
 
     var svg = d3.select("#contentWrapper")
         .append("svg")
@@ -231,33 +255,32 @@ d3.queue()
 	
 	countries = topojson.feature(geoData, geoData.objects.units);
 	svg.append("g")
-    .attr("id", "countries")
-    .selectAll("path.country")
-    .data(countries.features)
-    .enter()
-    .append("path")
-    .attr("class", "country")
-    .attr("id", function(d) { return d.properties.name; })
-    .attr("d", function (country) {
-        if(country.properties.name != "Antarctica")
-    	return pathGenerator(country);
-    })
-    .on("mouseover", function(country){
-        	this.style.opacity = 0.7
-        	svg.select("#CountryName").text(country.properties.name);
-        	// svg.select("#FirstYear").text(firstYear[country.properties.name])
-
+        .attr("id", "countries")
+        .selectAll("path.country")
+        .data(countries.features)
+        .enter()
+        .append("path")
+        .attr("class", "country")
+        .attr("id", function(d) { return d.properties.name; })
+        .attr("d", function (country) {
+            if(country.properties.name != "Antarctica")
+        	return pathGenerator(country);
         })
-    .on("mouseout", function(country){
-        	this.style.opacity = 1;
-    	})
-    .style("fill", function(d) {
-    	//CHANGE use data from contraData to get different shadings
-    	//something like
-    	//return color (pairRateWithId[d.id]);
-    	//https://suffenus.wordpress.com/2014/01/07/making-interactive-maps-with-d3-for-total-beginners/
-    	return "light grey";
-    });
+        .on("mouseover", function(country){
+            this.style.opacity = 0.7
+        	svg.select("#CountryName").text(country.properties.name);
+            // svg.select("#FirstYear").text(firstYear[country.properties.name])
+        })
+        .on("mouseout", function(country){
+            this.style.opacity = 1;
+        })
+        .style("fill", function(d) {
+        	//CHANGE use data from contraData to get different shadings
+        	//something like
+        	//return color (pairRateWithId[d.id]);
+        	//https://suffenus.wordpress.com/2014/01/07/making-interactive-maps-with-d3-for-total-beginners/
+        	return "light grey";
+        });
 
     var slider = d3.select("body")
             .append("div")
