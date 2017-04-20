@@ -287,7 +287,12 @@ d3.queue()
             tooltip.style("opacity", 0)
         })
         .on("mousemove", function(country){
-            if(typeof(enrollmentValues[country.id]) != 'undefined' ){
+            if(enrollmentValues[country.id] == -1){
+                tooltip.text(country.properties.name + '\n'+ "never achieved " + contraceptiveSlider.value + "% birth control access")
+                .style("left", (d3.event.pageX - 90) + "px")
+                .style("top", (d3.event.pageY - 30) + "px");
+            }
+            else if(typeof(enrollmentValues[country.id]) != 'undefined'){
                 tooltip.text(country.properties.name + '\n'+ 'Female Enrollment Percentage: ' + String(enrollmentValues[country.id]).substring(0,4) + '%')
                 .style("left", (d3.event.pageX - 90) + "px")
                 .style("top", (d3.event.pageY - 30) + "px");
