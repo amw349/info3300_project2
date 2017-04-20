@@ -180,6 +180,7 @@ function updateEnrollmentValues(yearsPlus) {
         	var yearAchieved = firstYear[key];
         	var yearIndex = yearAchieved - 1990 + yearsPlus;
         	if (enrollData[key] != undefined){
+        		console.log(yearIndex)
         		if (yearIndex >= 0 && yearIndex < enrollData[key].length){
 	        		var enrollPercent = enrollData[key][yearIndex];
 	        		enrollmentValues[key] = enrollPercent;
@@ -372,7 +373,7 @@ d3.queue()
     // .attr("y", 600)
     // .style("font-size", "30pt");
     // svg.select("#yearsAfter").text("After Fifteen Years");
-
+    updateFirstYear(contraceptiveSlider.value);
 
 })
 
