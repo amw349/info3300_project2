@@ -103,6 +103,11 @@ var countries;
 var firstYear;
 var enrollmentValues;
 
+var color = d3.scaleQuantize()
+    .domain([0, 100])
+    .range(["hsl(0, 100%, 100%)","hsl(0, 100%, 90%)","hsl(0, 100%, 80%)","hsl(0, 100%, 70%)","hsl(0, 100%, 60%)",
+                   "hsl(0, 100%, 50%)","hsl(0, 100%, 40%)", "hsl(0, 100%, 30%)","hsl(0, 100%, 20%)","hsl(0, 100%, 10%)"]);
+
 function updateFirstYear(newValue) {
 	firstYear = {};
 
@@ -123,7 +128,7 @@ function updateFirstYear(newValue) {
 			firstYear[d.ID] = 0;
 		}
 	});
-    console.log("calling usevalues hopefully");
+    // console.log("calling usevalues hopefully");
     updateEnrollmentValues(0);
 }
 
@@ -135,7 +140,7 @@ function updateEnrollmentValues(yearsPlus) {
         	var yearAchieved = firstYear[key];
         	var yearIndex = yearAchieved - 1990 + yearsPlus;
         	if (enrollData[key] != undefined){
-        		console.log(yearIndex)
+        		// console.log(yearIndex)
         		if (yearIndex >= 0 && yearIndex < enrollData[key].length){
 	        		if (enrollData[key][yearIndex] > 0){
 		        		var enrollPercent = enrollData[key][yearIndex];
@@ -147,12 +152,15 @@ function updateEnrollmentValues(yearsPlus) {
 	        	}
     		}
         }
-    console.log(enrollmentValues["USA"])
     updateMap();
 }
 
 function updateMap() {
-
+    d3.selectAll("path")
+    .style("fill", function (d){
+        console.log(enrollmentValues[d.id]);
+        return color(enrollmentValues[d.id]);
+    })
 }
 
 
@@ -230,7 +238,7 @@ d3.queue()
         .on("mouseout", function(country){
             this.style.opacity = 1;
         })
-        .style("fill", function(d) {
+        .style("fill", function (d) {
         	//CHANGE use data from contraData to get different shadings
         	//something like
         	//return color (pairRateWithId[d.id]);
@@ -242,8 +250,7 @@ d3.queue()
             .append("div")
             .attr("id", "slider")
 
-    slider.append("text")
-            .append("input")            
+    slider.append("input")            
             .attr("type", "range")
             .attr("name", "contraceptiveSlider")
             .attr("min", "0")
@@ -256,8 +263,7 @@ d3.queue()
                 value = this.value;
             });
 
-    slider.append("text")
-            .append("input")            
+    slider.append("input")            
             .attr("type", "range")
             .attr("name", "yearsSlider")
             .attr("min", "0")
@@ -274,7 +280,7 @@ d3.queue()
     var yearsSlider = document.getElementById("yearsSlider")
 
     contraceptiveSlider.oninput = function() {
-        console.log("contraceptiveSlider val:" + contraceptiveSlider.value);
+        // console.log("contraceptiveSlider val:" + contraceptiveSlider.value);
         document.getElementById("pervasiveShow").innerHTML = "You selected " + String(contraceptiveSlider.value) + "% birth control access";
         updateFirstYear(contraceptiveSlider.value);
      };
@@ -282,10 +288,11 @@ d3.queue()
      yearsSlider.oninput = function() {
         document.getElementById("yearsAfterShow").innerHTML = "Displaying data for " + String(yearsSlider.value) + " years after access achieved";
      	updateEnrollmentValues(yearsSlider.vaule)
-     	console.log("yearsSlider val:" + yearsSlider.value);
+     	// console.log("yearsSlider val:" + yearsSlider.value);
      }
 
     updateFirstYear(contraceptiveSlider.value);
+
 
 })
 
