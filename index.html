@@ -26,7 +26,7 @@ path.country { fill: #ccc; stroke: #888;; }
 #contraceptiveSlider {
     display: block;
     margin: auto;
-    margin-bottom: 10%;
+    margin-bottom: 3%;
 }
 #yearsSlider {
     display: block;
@@ -36,21 +36,21 @@ path.country { fill: #ccc; stroke: #888;; }
 #pervasiveShow {
     position: absolute;
     margin-top: 32%;
-    font-size: 20px;
+    font-size: 18px;
     color: black;
     font-family: 'Alegreya Sans', Calibri, sans-serif;
     display: block;
-    padding-left: 7%;
+    padding-left: 10%;
     font-weight: bolder;
 }
 #yearsAfterShow {
     position: absolute;
     margin-top: 35%;
-    font-size: 20px;
+    font-size: 18px;
     color: black;
     font-family: 'Alegreya Sans', Calibri, sans-serif;
     display: block;
-    padding-left: 7%;
+    padding-left: 10%;
     font-weight: bolder;
 }
 h1 {
@@ -244,11 +244,17 @@ d3.queue()
         .attr("x", 10)
         .attr("y", 28)
         .style("font-size", "18pt");
-	
+    
+    svg.append("text")
+        .attr("id", "beforeFirst")
+        .attr("x", 10)
+        .attr("y", 48)
+        .style("font-size", "18pt");
+    
     svg.append("text")
 	    .attr("id", "FirstYear")
 	    .attr("x", 10)
-	    .attr("y", 48)
+	    .attr("y", 68)
 	    .style("font-size", "18pt");
 
 	countries = topojson.feature(geoData, geoData.objects.units);
@@ -267,7 +273,8 @@ d3.queue()
         .on("mouseover", function(country){
             this.style.opacity = 0.7
         	svg.select("#CountryName").text(country.properties.name);
-            svg.select("#FirstYear").text(firstYear[country.id])
+            svg.select("#beforeFirst").text("Achieved selected birth control");
+            svg.select("#FirstYear").text("pervasiveness in " + firstYear[country.id]);
         })
         .on("mouseout", function(country){
             this.style.opacity = 1;
@@ -305,7 +312,7 @@ d3.queue()
             .attr("min", "0")
             .attr("max", "15")
             .attr("value", "0") // default/starting value
-            .attr("step", "5")
+            .attr("step", "1")
             .attr("id", "yearsSlider")
             .style("width", "420px")
             .on("input", function() { 
@@ -322,7 +329,7 @@ d3.queue()
      };
 
      yearsSlider.oninput = function() {
-        document.getElementById("yearsAfterShow").innerHTML = "Displaying data " + String(yearsSlider.value) + " years after access achieved";
+        document.getElementById("yearsAfterShow").innerHTML = "Displaying data for " + String(yearsSlider.value) + " years after access achieved";
      	updateEnrollmentValues(yearsSlider.vaule)
      	console.log("yearsSlider val:" + yearsSlider.value);
      }
