@@ -118,13 +118,15 @@ function updateFirstYear(contraceptivePercent) {
 		percentageAchieved = false;
 		var year = 0;
 		while (!percentageAchieved && year < 25){
-			if (d.Rate[year] >= contraceptivePercent){
+			if (d.Rate[year] > contraceptivePercent){
 				percentageAchieved = true;
-			};
-			year += 1;
+			}
+            else{
+			 year += 1;
+            }   
 		};
 		if (percentageAchieved){
-			firstYear[d.ID] = 1990 + year;
+			firstYear[d.ID] = year;
 		}
 		else {
 			firstYear[d.ID] = 0;
@@ -139,7 +141,7 @@ function updateEnrollmentValues(yearsPlus) {
 	enrollmentValues = {}
 	for (key in firstYear){
         var yearAchieved = firstYear[key];
-    	var yearIndex = yearAchieved - 1990 + yearsPlus;
+    	var yearIndex = yearAchieved + yearsPlus;
         if (enrollData[key] != undefined){
         	if (yearIndex >= 0 && yearIndex < enrollData[key].length){
 	        	if (enrollData[key][yearIndex] > 0){
