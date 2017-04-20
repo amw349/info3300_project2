@@ -28,6 +28,11 @@ path.country { fill: #ccc; stroke: #888;; }
     margin: auto;
     margin-bottom: 10%;
 }
+#yearsSlider {
+    display: block;
+    margin: auto;
+    margin-bottom: 20%;
+}
 #showingYears {
     position: absolute;
     margin-top: 32%;
@@ -109,7 +114,7 @@ function updateFirstYear(newValue) {
 		}
 	});
     console.log("calling usevalues hopefully");
-    updateEnrollmentValues(firstYear);
+    updateEnrollmentValues(yearsSlider.value);
 }
 
 // wait function from endmemo.com
@@ -169,14 +174,19 @@ function yearShow() {
     setTimeout(timeoutLoop, delay)
 }
 
-function updateEnrollmentValues(newValue) {
+function updateEnrollmentValues(yearsPlus) {
 	enrollmentValues = {}
 	for(key in firstYear){
-        	var yearAchieved = yearDictionary[key];
+        	var yearAchieved = firstYear[key];
         	var yearIndex = yearAchieved - 1990 + yearsPlus;
-        	if (enrollData[key] != undefined && yearIndex < enrollData[key].length){
-        		var enrollPercent = enrollData[key][yearIndex];
-        		enrollmentValues[key] = enrollPercent;
+        	if (enrollData[key] != undefined){
+        		if (yearIndex >= 0 && yearIndex < enrollData[key].length){
+	        		var enrollPercent = enrollData[key][yearIndex];
+	        		enrollmentValues[key] = enrollPercent;
+	        	}
+	        	else {
+	        		enrollmentValues[key] = -1;
+	        	}
     		}
         }
     updateMap();
@@ -318,18 +328,32 @@ d3.queue()
                 value = this.value;
             });
 
+    slider.append("text")
+            .append("input")            
+            .attr("type", "range")
+            .attr("name", "yearsSlider")
+            .attr("min", "0")
+            .attr("max", "15")
+            .attr("value", "0") // default/starting value
+            .attr("step", "1")
+            .attr("id", "yearsSlider")
+            .style("width", "420px")
+            .on("input", function() { 
+                value = this.value;
+            });
+
     var contraceptiveSlider = document.getElementById("contraceptiveSlider")
     var yearsSlider = document.getElementById("yearsSlider")
 
     contraceptiveSlider.oninput = function() {
-        console.log(contraceptiveSlider.value);
-        console.log("slider val:" + contraceptiveSlider.value);
+        console.log("contraceptiveSlider val:" + contraceptiveSlider.value);
         document.getElementById("showingYears").innerHTML = String(contraceptiveSlider.value);
         updateFirstYear(contraceptiveSlider.value);
      };
 
      yearsSlider.oninput = function() {
      	updateEnrollmentValues(yearsSlider.vaule)
+     	console.log("yearsSlider val:" + yearsSlider.value);
      }
 
 
