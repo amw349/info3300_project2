@@ -111,15 +111,18 @@ var color = d3.scaleQuantize()
     .range(["hsl(0, 100%, 100%)","hsl(0, 100%, 90%)","hsl(0, 100%, 80%)","hsl(0, 100%, 70%)","hsl(0, 100%, 60%)",
                    "hsl(0, 100%, 50%)","hsl(0, 100%, 40%)", "hsl(0, 100%, 30%)","hsl(0, 100%, 20%)","hsl(0, 100%, 10%)"]);
 
-function updateFirstYear(newValue) {
+function updateFirstYear(contraceptivePercent) {
 	firstYear = {};
 
 	var percentageAchieved;
+    console.log(contraData);
+    console.log("anything below is d:")
 	contraData.forEach(function(d) {
+        console.log(d);
 		percentageAchieved = false;
 		var year = 0;
 		while(!percentageAchieved && year < 25){
-			if(d.Rate[year] > newValue){
+			if(d.Rate[year] > contraceptivePercent){
 				percentageAchieved = true;
 			};
 			year += 1;
@@ -161,7 +164,6 @@ function updateEnrollmentValues(yearsPlus) {
 function updateMap() {
     d3.selectAll("path")
     .style("fill", function (d){
-        console.log(enrollmentValues[d.id]);
         return color(enrollmentValues[d.id]);
     })
 }
@@ -269,7 +271,6 @@ d3.queue()
         .attr("font-family","sans-serif")
         .attr("font-size", "20")
         .attr("fill", "white")
-        .text("testing");
 
     slider.append("input")            
             .attr("type", "range")
