@@ -38,20 +38,16 @@
             margin-top: 33%;
             font-size: 18px;
             color: black;
-            font-family: 'Alegreya Sans', Calibri, sans-serif;
             display: block;
             padding-left: 10%;
-            font-weight: bolder;
         }
         #yearsAfterShow {
             position: absolute;
             margin-top: 35%;
             font-size: 18px;
             color: black;
-            font-family: 'Alegreya Sans', Calibri, sans-serif;
             display: block;
             padding-left: 10%;
-            font-weight: bolder;
         }
         h1 {
             color: white;
@@ -107,6 +103,8 @@
 
 <script>
 
+var svgHeight = 650;
+var svgWidth = 1400;
 var projection = d3.geoMercator().scale(150).translate([675,450]);
 var pathGenerator = d3.geoPath().projection(projection);
 
@@ -118,8 +116,10 @@ var firstYear;
 var enrollmentValues;
 
 var color = d3.scaleThreshold()
-    .domain([0, 1, 3, 5, 10, 15, 25, 40, 60])
+    .domain([0, .25, 2, 5, 10, 15, 25, 40, 60])
     .range(['#D3D3D3', '#ffffd9','#edf8b1','#c7e9b4','#7fcdbb','#41b6c4','#1d91c0','#225ea8','#253494','#081d58']);
+
+var legend_labels = ["0", "1", "3+", "5+", "10+", "15+", "25+", "40+", "60+"];              
 
 function updateFirstYear(contraceptivePercent) {
     // first year the contraceptive percentage was achieved in each country.
@@ -207,26 +207,26 @@ d3.queue()
 
     var svg = d3.select("#contentWrapper")
         .append("svg")
-        .attr("height", "650")
-        .attr("width", "1400");
+        .attr("height", svgHeight)
+        .attr("width", svgWidth);
 
     svg.append("text")
         .attr("id", "CountryName")
-        .attr("x", 10)
-        .attr("y", 28)
-        .style("font-size", "18pt");
+        .attr("x", 20)
+        .attr("y", 38)
+        .style("font-size", "16pt");
     
     svg.append("text")
         .attr("id", "beforeFirst")
-        .attr("x", 10)
-        .attr("y", 48)
-        .style("font-size", "18pt");
+        .attr("x", 20)
+        .attr("y", 68)
+        .style("font-size", "16pt");
     
     svg.append("text")
 	    .attr("id", "FirstYear")
-	    .attr("x", 10)
-	    .attr("y", 68)
-	    .style("font-size", "18pt");
+	    .attr("x", 20)
+	    .attr("y", 98)
+	    .style("font-size", "16pt");
 
     var tooltip = d3.select("body").append("div")
     .attr("class", "tooltip")
@@ -291,6 +291,31 @@ d3.queue()
         	return "light grey";
         });
 
+    // code from legend taken from http://bl.ocks.org/KoGor/5685876
+
+    var legend = svg.append("g")
+        .attr("class", "legend")
+        .selectAll("g.legend")
+            .data([0, 1, 3, 5, 10, 15, 25, 40, 60])
+            .enter().append("g")
+            .attr("class", "legend_block");
+
+    var ls_w = 20, ls_h = 20;
+
+    legend.append("rect")
+        .attr("x", svgWidth - 130)
+        .attr("y", function(d, i){ console.log(i); return (i*ls_h) + 2*ls_h;})
+        .attr("width", ls_w)
+        .attr("height", ls_h)
+        .style("fill", function(d, i) { return color(d); })
+        .style("opacity", 0.8);
+
+    legend.append("text")
+        .attr("x", svgWidth - 100)
+        .attr("y", function(d, i){ return (i*ls_h) + ls_h + 40;})
+        .text(function(d, i){ return legend_labels[i]; })
+        .attr("class", "legend-text");
+
     var slider = d3.select("body")
             .append("div")
             .attr("id", "slider");
@@ -340,14 +365,18 @@ d3.queue()
 
     contraceptiveSlider.oninput = function() {
         d3.select("#birth-control-access")
-            .text(String(contraceptiveSlider.value) + "% birth control access")
+            .text(String(contraceptiveSlider.value) + "% birth control access");
+        svg.select("#beforeFirst").text("Achieved the selected (" + contraceptiveSlider.value + "%) birth control");
+        svg.select("#FirstYear").text("pervasiveness in " + firstYear[country.id]);
         updateFirstYear(contraceptiveSlider.value);
     };
 
     yearsSlider.oninput = function() {
      	d3.select("#years-after-access-achieved")
-            .text("Data for " + String(yearsSlider.value) + " year(s) after access achieved")
-        updateEnrollmentValues(yearsSlider.value)
+            .text("Data for " + String(yearsSlider.value) + " year(s) after access achieved");
+        svg.select("#beforeFirst").text("Achieved the selected (" + contraceptiveSlider.value + "%) birth control");
+            svg.select("#FirstYear").text("pervasiveness in " + firstYear[country.id]);
+        updateEnrollmentValues(yearsSlider.value);
     }
 
     updateFirstYear(contraceptiveSlider.value);
