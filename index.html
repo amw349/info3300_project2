@@ -106,9 +106,8 @@ var firstYear;
 var enrollmentValues;
 
 var color = d3.scaleQuantize()
-    .domain([0, 100])
-    .range(["hsl(0, 100%, 100%)","hsl(0, 100%, 90%)","hsl(0, 100%, 80%)","hsl(0, 100%, 70%)","hsl(0, 100%, 60%)",
-                   "hsl(0, 100%, 50%)","hsl(0, 100%, 40%)", "hsl(0, 100%, 30%)","hsl(0, 100%, 20%)","hsl(0, 100%, 10%)"]);
+    .domain([0, 90])
+    .range(['#ffffd9','#edf8b1','#c7e9b4','#7fcdbb','#41b6c4','#1d91c0','#225ea8','#253494','#081d58']);
 
 function updateFirstYear(contraceptivePercent) {
     // first year the contraceptive percentage was achieved in each country.
@@ -240,7 +239,7 @@ d3.queue()
             svg.select("#FirstYear").text("access statistics");
             }
             else {
-            svg.select("#beforeFirst").text("Achieved " + contraceptiveSlider.value + "% birth control");
+            svg.select("#beforeFirst").text("Achieved the selected (" + contraceptiveSlider.value + "%) birth control");
             svg.select("#FirstYear").text("pervasiveness in " + firstYear[country.id]);
             }
         })
@@ -263,7 +262,7 @@ d3.queue()
             .attr("type", "range")
             .attr("name", "contraceptiveSlider")
             .attr("min", "0")
-            .attr("max", "100")
+            .attr("max", "90")
             .attr("value", "0") // default/starting value
             .attr("step", "1")
             .attr("id", "contraceptiveSlider")
@@ -276,7 +275,7 @@ d3.queue()
             .attr("type", "range")
             .attr("name", "yearsSlider")
             .attr("min", "0")
-            .attr("max", "15")
+            .attr("max", "10")
             .attr("value", "0") // default/starting value
             .attr("step", "1")
             .attr("id", "yearsSlider")
