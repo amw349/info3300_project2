@@ -35,7 +35,7 @@ path.country { fill: #ccc; stroke: #888;; }
 }
 #pervasiveShow {
     position: absolute;
-    margin-top: 32%;
+    margin-top: 33%;
     font-size: 18px;
     color: black;
     font-family: 'Alegreya Sans', Calibri, sans-serif;
@@ -64,7 +64,7 @@ h1 {
 <div id="contentWrapper">
     <div id="header">
         <h1><br>
-            Effect of Contraceptive Prevalence on the Percentage of College <br>
+            Correlation Between Birth Control Access and the Percentage of College <br>
             Students Who Are Female
         </h1>
     </div>
@@ -75,13 +75,16 @@ h1 {
         The graph above shows the relationship between access to contraceptives within a country and the percentage of <br>
         college students (from that country) who are female.
         <br><br>
-        Use the slider to select a percentage of women who have access to birth control, and we'll find the years that every country on earth 
+        Use the top slider to select a percentage of people (in each country) who have access to birth control, and we'll find the years that every country on earth 
         <br>
         achieved that level of access (it'll be different for every country).
         <br>
         <br>
-        Then, we'll display display the percentage of college students from that country who are female. We'll do this <br>
-        5, 7, 10, and 15 years after each country achieves the selected birth control prevalence, as shown by the legend on the graph.
+        Then, use the second slider to see how 
+        <br>
+        <br>
+        We'll display the percentage of college students from that country who are female. We'll do this <br>
+        for the selected number of years after each country achieves the selected birth control prevalence. The color scheme is explained by the legend on the graph.
         <br><br>
         If we don't have the data for a given country (either because it doesn't exist in the world bank, or because the country never
         <br>
@@ -302,7 +305,15 @@ d3.queue()
 
     var slider = d3.select("body")
             .append("div")
-            .attr("id", "slider")
+            .attr("id", "slider");
+    
+    slider.append("text")
+        .attr("x", "260")
+        .attr("y", "40")
+        .attr("font-family","sans-serif")
+        .attr("font-size", "20")
+        .attr("fill", "white")
+        .text("testing");
 
     slider.append("text")
             .append("input")            
