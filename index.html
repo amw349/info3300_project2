@@ -16,6 +16,7 @@
             text-align: center;
             color: white;
             font-size: 20px;
+            margin-bottom: 30px;
         }
         #explanationText {
             margin: auto;
@@ -23,15 +24,19 @@
             color: white;
             font-size: 25px;   
         }
-        #contraceptiveSlider {
+        #sliders{
             display: block;
             margin: auto;
-            margin-bottom: 3%;
+            margin-bottom: 5%;
+        }
+        #contraceptiveSlider {
+            display: inline-block;
+            margin: auto;
         }
         #yearsSlider {
-            display: block;
+            display: inline-block;
             margin: auto;
-            margin-bottom: 20%;
+            margin-left: 20px;
         }
         #pervasiveShow {
             position: absolute;
@@ -221,6 +226,10 @@ d3.queue()
 		enrollData[d.ID] = d.Rate;
 	})
 
+    var sliders = d3.select("#contentWrapper")
+        .append("div")
+        .attr("id", "sliders");
+
     var svg = d3.select("#contentWrapper")
         .append("svg")
         .attr("height", svgHeight)
@@ -244,7 +253,7 @@ d3.queue()
 	    .attr("y", 98)
 	    .style("font-size", "16pt");
 
-    var tooltip = d3.select("body").append("div")
+    var tooltip = d3.select("#contentWrapper").append("div")
     .attr("class", "tooltip")
     .style("opacity", 0);
 
@@ -344,10 +353,6 @@ d3.queue()
         .attr("y", function(d, i){ return (i*ls_h) + ls_h + 50;})
         .text(function(d, i){ return legend_labels[i]; })
         .attr("class", "legend-text");
-
-    var sliders = d3.select("body")
-            .append("div")
-            .attr("id", "slider");
 
     sliders.append("input")            
             .attr("type", "range")
