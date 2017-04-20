@@ -118,10 +118,12 @@ function updateFirstYear(contraceptivePercent) {
 		percentageAchieved = false;
 		var year = 0;
 		while (!percentageAchieved && year < 25){
-			if (d.Rate[year] >= contraceptivePercent){
+			if (d.Rate[year] > contraceptivePercent){
 				percentageAchieved = true;
-			};
-			year += 1;
+			}
+            else{
+			 year += 1;
+            }   
 		};
 		if (percentageAchieved){
 			firstYear[d.ID] = 1990 + year;
