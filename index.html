@@ -105,9 +105,9 @@ var countries;
 var firstYear;
 var enrollmentValues;
 
-var color = d3.scaleQuantize()
-    .domain([0, 90])
-    .range(['#ffffd9','#edf8b1','#c7e9b4','#7fcdbb','#41b6c4','#1d91c0','#225ea8','#253494','#081d58']);
+var color = d3.scaleThreshold()
+    .domain([0, 1, 3, 5, 10, 15, 25, 40, 60])
+    .range(['#D3D3D3', '#ffffd9','#edf8b1','#c7e9b4','#7fcdbb','#41b6c4','#1d91c0','#225ea8','#253494','#081d58']);
 
 function updateFirstYear(contraceptivePercent) {
     // first year the contraceptive percentage was achieved in each country.
