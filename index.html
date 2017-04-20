@@ -231,15 +231,6 @@ d3.queue()
         .attr("x", 20)
         .attr("y", 38)
         .style("font-size", "16pt");
-
-    svg.append("text")
-        .attr("id", "legendName")
-        .attr("x", 960)
-        .attr("y", 38)
-        .style("font-size", "16pt");
-
-    svg.select("#legendName").text("Percent of College Students who are Female:");
-
     
     svg.append("text")
         .attr("id", "beforeFirst")
@@ -327,10 +318,11 @@ d3.queue()
             .enter().append("g")
             .attr("class", "legend_block")
         
-    // d3.select(".legend").append("text")
-    //     .text("Percent of female college students")
-    //     .attr("x", svgWidth - 130)
-    //     .attr("y", 38);
+    d3.select(".legend").append("text")
+        .text("Percent of College Students who are Female:")
+        .attr("x", svgWidth - 440)
+        .attr("y", 38)
+        .style("font-size", "16pt");
 
     var ls_w = 20, ls_h = 20;
 
@@ -348,11 +340,11 @@ d3.queue()
         .text(function(d, i){ return legend_labels[i]; })
         .attr("class", "legend-text");
 
-    var slider = d3.select("body")
+    var sliders = d3.select("body")
             .append("div")
             .attr("id", "slider");
 
-    slider.append("input")            
+    sliders.append("input")            
             .attr("type", "range")
             .attr("name", "contraceptiveSlider")
             .attr("min", "0")
@@ -363,9 +355,12 @@ d3.queue()
             .style("width", "420px")
             .on("input", function() { 
                 value = this.value;
-            });
+            })
+            .append("text")
+                .text("Percent Access to Birth Control")
 
-    slider.append("input")            
+
+    sliders.append("input")            
             .attr("type", "range")
             .attr("name", "yearsSlider")
             .attr("min", "0")
@@ -376,7 +371,9 @@ d3.queue()
             .style("width", "420px")
             .on("input", function() { 
                 value = this.value;
-            });
+            })
+            .append("text")
+                .text("Years After Access Is Achieved")
 
     var contraceptiveSlider = document.getElementById("contraceptiveSlider");
     var yearsSlider = document.getElementById("yearsSlider");
@@ -414,22 +411,6 @@ d3.queue()
     updateFirstYear(contraceptiveSlider.value);
 })
 </script>
-<div id="firstLabel">
-Percent Access to Birth Control
-</div>
-<div id="secondLabel">
-Years After Access Is Achieved
-</div>
 
-<!--     <br>
-    <div id="pervasiveShow" class="showingSelections">
-        Displaying data for 0% birth control access
-    </div>
-    <div id="yearsAfterShow" class="showingSelections">
-        Displaying data for 0 years after access achieved
-    </div>
-    
-    </div>
-    <br><br> -->
 </body>
 </html>
