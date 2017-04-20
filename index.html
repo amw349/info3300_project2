@@ -126,14 +126,12 @@ function updateFirstYear(contraceptivePercent) {
             }   
 		};
 		if (percentageAchieved){
-			firstYear[d.ID] = year;
+			firstYear[d.ID] = 1990 + year;
 		}
 		else {
 			firstYear[d.ID] = 0;
 		}
 	});
-    // TODO: Do we need this here? I see why. Cause we need to call it initially, but wouldnt it be bettter to call it outside this 
-    // function since this is constantly being called each time the contraceptive slider moves?
     updateEnrollmentValues(yearsSlider.value);
 }
 
@@ -141,7 +139,7 @@ function updateEnrollmentValues(yearsPlus) {
 	enrollmentValues = {}
 	for (key in firstYear){
         var yearAchieved = firstYear[key];
-    	var yearIndex = yearAchieved + yearsPlus;
+    	var yearIndex = Number(yearAchieved) - 1990 + Number(yearsPlus);
         if (enrollData[key] != undefined){
         	if (yearIndex >= 0 && yearIndex < enrollData[key].length){
 	        	if (enrollData[key][yearIndex] > 0){
@@ -249,10 +247,6 @@ d3.queue()
             this.style.opacity = 1;
         })
         .style("fill", function (d) {
-        	//CHANGE use data from contraData to get different shadings
-        	//something like
-        	//return color (pairRateWithId[d.id]);
-        	//https://suffenus.wordpress.com/2014/01/07/making-interactive-maps-with-d3-for-total-beginners/
         	return "light grey";
         });
 
@@ -304,14 +298,12 @@ d3.queue()
         .style("font-size", "16pt");
 
     contraceptiveSlider.oninput = function() {
-        // document.getElementById("pervasiveShow").innerHTML = "Displaying data for " + String(contraceptiveSlider.value) + "% birth control access";
         d3.select("#birth-control-access")
             .text(String(contraceptiveSlider.value) + "% birth control access")
         updateFirstYear(contraceptiveSlider.value);
     };
 
     yearsSlider.oninput = function() {
-        // document.getElementById("yearsAfterShow").innerHTML = "Displaying data for " + String(yearsSlider.value) + " years after access achieved";
      	d3.select("#years-after-access-achieved")
             .text("Data for " + String(yearsSlider.value) + " year(s) after access achieved")
         updateEnrollmentValues(yearsSlider.value)
