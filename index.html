@@ -33,14 +33,24 @@ path.country { fill: #ccc; stroke: #888;; }
     margin: auto;
     margin-bottom: 20%;
 }
-#showingYears {
+#pervasiveShow {
     position: absolute;
     margin-top: 32%;
-    font-size: 30px;
+    font-size: 20px;
     color: black;
     font-family: 'Alegreya Sans', Calibri, sans-serif;
     display: block;
-    padding-left: 12%;
+    padding-left: 7%;
+    font-weight: bolder;
+}
+#yearsAfterShow {
+    position: absolute;
+    margin-top: 35%;
+    font-size: 20px;
+    color: black;
+    font-family: 'Alegreya Sans', Calibri, sans-serif;
+    display: block;
+    padding-left: 7%;
     font-weight: bolder;
 }
 h1 {
@@ -126,53 +136,6 @@ function wait(ms)
     while (d2-d < ms);
 }
     
-function yearShow() {
-    console.log("called yearShow");
-    var inc = 0
-    var max = 6;
-    var delay = 1000;
-    var toWord = 500;
-
-        
-        function timeoutLoop() {
-            console.log("inside timeoutloop");
-            var theYears = [0, 5, 7, 10, 15];
-
-            // replacing 'after XX years' svg element
-            var first = "After ";
-            if (theYears[inc] == 5) {
-                toWord = "Five";
-            }
-            else if (theYears[inc] == 10) {
-                toWord = "Ten";
-            }
-            else if (theYears[inc] == 7) {
-                toWord = "Seven";
-            }
-            else if (theYears[inc] == 15) {
-                toWord = "Fifteen";
-            }
-            else if (theYears[inc] == 0) {
-                toWord = "Zero";
-            }
-            var second = first.concat(toWord);
-            var third = " Years"
-            var last = second.concat(third)
-            if (toWord == 500){
-                document.getElementById("showingYears").innerHTML = "";
-            }
-            else {
-                document.getElementById("showingYears").innerHTML = last;
-            }
-                console.log("inc: " + inc);
-                console.log("max: " + max);
-                if (++inc < max) {
-                    setTimeout(timeoutLoop, delay)
-                }
-            }
-    console.log("first timeout");
-    setTimeout(timeoutLoop, delay)
-}
 
 function updateEnrollmentValues(yearsPlus) {
 	enrollmentValues = {}
@@ -327,7 +290,7 @@ d3.queue()
             .attr("type", "range")
             .attr("name", "contraceptiveSlider")
             .attr("min", "0")
-            .attr("max", "90")
+            .attr("max", "100")
             .attr("value", "0") // default/starting value
             .attr("step", "1")
             .attr("id", "contraceptiveSlider")
@@ -343,7 +306,7 @@ d3.queue()
             .attr("min", "0")
             .attr("max", "15")
             .attr("value", "0") // default/starting value
-            .attr("step", "1")
+            .attr("step", "5")
             .attr("id", "yearsSlider")
             .style("width", "420px")
             .on("input", function() { 
@@ -355,11 +318,12 @@ d3.queue()
 
     contraceptiveSlider.oninput = function() {
         console.log("contraceptiveSlider val:" + contraceptiveSlider.value);
-        document.getElementById("showingYears").innerHTML = String(contraceptiveSlider.value);
+        document.getElementById("pervasiveShow").innerHTML = "You selected " + String(contraceptiveSlider.value) + "% birth control access";
         updateFirstYear(contraceptiveSlider.value);
      };
 
      yearsSlider.oninput = function() {
+        document.getElementById("yearsAfterShow").innerHTML = "Displaying data " + String(yearsSlider.value) + " years after access achieved";
      	updateEnrollmentValues(yearsSlider.vaule)
      	console.log("yearsSlider val:" + yearsSlider.value);
      }
@@ -380,9 +344,11 @@ d3.queue()
 
 </script>
     <br>
-    <div id="showingYears">
-        After Fifteen Years
+    <div id="pervasiveShow" class="showingSelections">
     </div>
+    <div id="yearsAfterShow" class="showingSelections">
+    </div>
+    
     </div>
     <br><br>
 </body>
