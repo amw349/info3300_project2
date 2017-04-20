@@ -1,63 +1,63 @@
 <html>
 <head>
-<title>P2</title>
-<!--<link href="https://fonts.googleapis.com/css?family=Alegreya|Alegreya+Sans" rel="stylesheet"> -->
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/default.min.css">
-<link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
-<script src="https://d3js.org/d3.v4.min.js"></script>
-<script src="http://d3js.org/topojson.v2.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
-<style>
-body { font-family: 'Alegreya Sans', Calibri, sans-serif; margin: auto; background-color: #444444;}
-svg { border: solid #ccc 1px; background-color: white; box-shadow: 5px 10px 50px white;}
-path.country { fill: #ccc; stroke: #888;; }
-#contentWrapper {
-    margin: auto;
-    text-align: center;
-    color: white;
-    font-size: 20px;
-}
-#explanationText {
-    margin: auto;
-    text-align: center;
-    color: white;
-    font-size: 25px;   
-}
-#contraceptiveSlider {
-    display: block;
-    margin: auto;
-    margin-bottom: 3%;
-}
-#yearsSlider {
-    display: block;
-    margin: auto;
-    margin-bottom: 20%;
-}
-#pervasiveShow {
-    position: absolute;
-    margin-top: 33%;
-    font-size: 18px;
-    color: black;
-    font-family: 'Alegreya Sans', Calibri, sans-serif;
-    display: block;
-    padding-left: 10%;
-    font-weight: bolder;
-}
-#yearsAfterShow {
-    position: absolute;
-    margin-top: 35%;
-    font-size: 18px;
-    color: black;
-    font-family: 'Alegreya Sans', Calibri, sans-serif;
-    display: block;
-    padding-left: 10%;
-    font-weight: bolder;
-}
-h1 {
-    color: white;
-    box-shadow: 5px 10px 50px white
-}
-</style>
+    <title>P2</title>
+    <!--<link href="https://fonts.googleapis.com/css?family=Alegreya|Alegreya+Sans" rel="stylesheet"> -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/default.min.css">
+    <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="http://d3js.org/topojson.v2.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
+    <style>
+        body { font-family: 'Alegreya Sans', Calibri, sans-serif; margin: auto; background-color: #444444;}
+        svg { border: solid #ccc 1px; background-color: white; box-shadow: 5px 10px 50px white;}
+        path.country { fill: #ccc; stroke: #888;; }
+        #contentWrapper {
+            margin: auto;
+            text-align: center;
+            color: white;
+            font-size: 20px;
+        }
+        #explanationText {
+            margin: auto;
+            text-align: center;
+            color: white;
+            font-size: 25px;   
+        }
+        #contraceptiveSlider {
+            display: block;
+            margin: auto;
+            margin-bottom: 3%;
+        }
+        #yearsSlider {
+            display: block;
+            margin: auto;
+            margin-bottom: 20%;
+        }
+        #pervasiveShow {
+            position: absolute;
+            margin-top: 33%;
+            font-size: 18px;
+            color: black;
+            font-family: 'Alegreya Sans', Calibri, sans-serif;
+            display: block;
+            padding-left: 10%;
+            font-weight: bolder;
+        }
+        #yearsAfterShow {
+            position: absolute;
+            margin-top: 35%;
+            font-size: 18px;
+            color: black;
+            font-family: 'Alegreya Sans', Calibri, sans-serif;
+            display: block;
+            padding-left: 10%;
+            font-weight: bolder;
+        }
+        h1 {
+            color: white;
+            box-shadow: 5px 10px 50px white
+        }
+    </style>
 </head>
 <body>
 
@@ -68,7 +68,6 @@ h1 {
             Students Who Are Female
         </h1>
     </div>
-
     <br>
     <br>
     <div id="explanationText">
@@ -115,49 +114,42 @@ function updateFirstYear(contraceptivePercent) {
 	firstYear = {};
 
 	var percentageAchieved;
-    console.log(contraData);
-    console.log("anything below is d:")
 	contraData.forEach(function(d) {
-        console.log(d);
 		percentageAchieved = false;
 		var year = 0;
-		while(!percentageAchieved && year < 25){
-			if(d.Rate[year] > contraceptivePercent){
+		while (!percentageAchieved && year < 25){
+			if (d.Rate[year] > contraceptivePercent){
 				percentageAchieved = true;
 			};
 			year += 1;
 		};
-		if(percentageAchieved){
+		if (percentageAchieved){
 			firstYear[d.ID] = 1990 + year;
 		}
 		else {
 			firstYear[d.ID] = 0;
 		}
 	});
-    // console.log("calling usevalues hopefully");
     updateEnrollmentValues(0);
 }
-
-    
 
 function updateEnrollmentValues(yearsPlus) {
 	enrollmentValues = {}
 	for(key in firstYear){
-        	var yearAchieved = firstYear[key];
-        	var yearIndex = yearAchieved - 1990 + yearsPlus;
-        	if (enrollData[key] != undefined){
-        		// console.log(yearIndex)
-        		if (yearIndex >= 0 && yearIndex < enrollData[key].length){
-	        		if (enrollData[key][yearIndex] > 0){
-		        		var enrollPercent = enrollData[key][yearIndex];
-		        		enrollmentValues[key] = enrollPercent;
-		        	}
-	        	}
-	        	else {
-	        		enrollmentValues[key] = -1;
-	        	}
-    		}
-        }
+        var yearAchieved = firstYear[key];
+    	var yearIndex = yearAchieved - 1990 + yearsPlus;
+        if (enrollData[key] != undefined){
+        	if (yearIndex >= 0 && yearIndex < enrollData[key].length){
+	        	if (enrollData[key][yearIndex] > 0){
+		      		var enrollPercent = enrollData[key][yearIndex];
+		    		enrollmentValues[key] = enrollPercent;
+		      	}
+	       	}
+	    	else {
+	     		enrollmentValues[key] = -1;
+	        }
+    	}
+    }
     updateMap();
 }
 
@@ -167,7 +159,6 @@ function updateMap() {
         return color(enrollmentValues[d.id]);
     })
 }
-
 
 function parse(row){
     // version 1:
@@ -303,24 +294,19 @@ d3.queue()
 
     contraceptiveSlider.oninput = function() {
 
-    // console.log("contraceptiveSlider val:" + contraceptiveSlider.value);
     document.getElementById("pervasiveShow").innerHTML = "Displaying data for " + String(contraceptiveSlider.value) + "% birth control access";
         updateFirstYear(contraceptiveSlider.value);
      };
 
-     yearsSlider.oninput = function() {
+    yearsSlider.oninput = function() {
         document.getElementById("yearsAfterShow").innerHTML = "Displaying data for " + String(yearsSlider.value) + " years after access achieved";
      	updateEnrollmentValues(yearsSlider.vaule)
-     	// console.log("yearsSlider val:" + yearsSlider.value);
-     }
+    }
 
     updateFirstYear(contraceptiveSlider.value);
-
-
 })
-
-
 </script>
+
     <br>
     <div id="pervasiveShow" class="showingSelections">
         Displaying data for 0% birth control access
