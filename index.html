@@ -141,7 +141,7 @@ function updateEnrollmentValues(yearsPlus) {
 	enrollmentValues = {}
 	for (key in firstYear){
         var yearAchieved = firstYear[key];
-    	var yearIndex = Number(yearAchieved - 1990 + yearsPlus);
+    	var yearIndex = Number(yearAchieved) - 1990 + Number(yearsPlus);
         if (enrollData[key] != undefined){
         	if (yearIndex >= 0 && yearIndex < enrollData[key].length){
 	        	if (enrollData[key][yearIndex] > 0){
