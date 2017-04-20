@@ -86,8 +86,9 @@ var contraData;
 var enrollData = {};
 var countries;
 var firstYear;
+var enrollmentValues;
 
-function takeValue(newValue) {
+function updateFirstYear(newValue) {
 	firstYear = {};
 
 	var percentageAchieved;
@@ -108,7 +109,7 @@ function takeValue(newValue) {
 		}
 	});
     console.log("calling usevalues hopefully");
-    useValues(firstYear);
+    updateEnrollmentValues(firstYear);
 }
 
 // wait function from endmemo.com
@@ -168,6 +169,23 @@ function yearShow() {
     setTimeout(timeoutLoop, delay)
 }
 
+function updateEnrollmentValues(newValue) {
+	enrollmentValues = {}
+	for(key in firstYear){
+        	var yearAchieved = yearDictionary[key];
+        	var yearIndex = yearAchieved - 1990 + yearsPlus;
+        	if (enrollData[key] != undefined && yearIndex < enrollData[key].length){
+        		var enrollPercent = enrollData[key][yearIndex];
+        		enrollmentValues[key] = enrollPercent;
+    		}
+        }
+    updateMap();
+}
+
+function updateMap() {
+
+}
+
 function useValues(yearDictionary) {
     console.log("called useValues");
     yearShow()
@@ -191,8 +209,8 @@ function useValues(yearDictionary) {
 
         // put that ratio in the map
 
-        for(key in yearDictionary){
-        	var yearAchieved = yearDictionary[key];
+        for(key in firstYear){
+        	var yearAchieved = firstYear[key];
         	var yearIndex = yearAchieved - 1990 + yearsPlus;
         	//console.log(key);
         	//console.log(yearAchieved);
@@ -301,13 +319,18 @@ d3.queue()
             });
 
     var contraceptiveSlider = document.getElementById("contraceptiveSlider")
+    var yearsSlider = document.getElementById("yearsSlider")
 
     contraceptiveSlider.oninput = function() {
         console.log(contraceptiveSlider.value);
         console.log("slider val:" + contraceptiveSlider.value);
         document.getElementById("showingYears").innerHTML = String(contraceptiveSlider.value);
-        takeValue(contraceptiveSlider.value);
+        updateFirstYear(contraceptiveSlider.value);
      };
+
+     yearsSlider.oninput = function() {
+     	updateEnrollmentValues(yearsSlider.vaule)
+     }
 
 
     // svg.append("text")
