@@ -65,6 +65,20 @@
           border-radius: 8px;           
           pointer-events: none; 
         }
+        #firstLabel {
+            position: absolute;
+            margin-top:46.1%;
+            font-size: 15px;
+            width: 100%;
+            text-align: center;
+        }
+        #secondLabel {
+            position: absolute;
+            margin-top:50%;
+            font-size: 15px;
+            width: 100%;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -114,6 +128,8 @@ var enrollData = {};
 var countries;
 var firstYear;
 var enrollmentValues;
+
+var currentCountry;
 
 var color = d3.scaleThreshold()
     .domain([0, .25, 2, 5, 10, 15, 25, 40, 60])
@@ -215,6 +231,15 @@ d3.queue()
         .attr("x", 20)
         .attr("y", 38)
         .style("font-size", "16pt");
+
+    svg.append("text")
+        .attr("id", "legendName")
+        .attr("x", 960)
+        .attr("y", 38)
+        .style("font-size", "16pt");
+
+    svg.select("#legendName").text("Percent of College Students who are Female:");
+
     
     svg.append("text")
         .attr("id", "beforeFirst")
@@ -263,6 +288,8 @@ d3.queue()
 
             //tooltip
             tooltip.style("opacity", 1)
+
+            currentCountry = country.id;
         })
         .on("mouseout", function(country){
             this.style.opacity = 1;
@@ -298,17 +325,18 @@ d3.queue()
         .selectAll("g.legend")
             .data([0, 1, 3, 5, 10, 15, 25, 40, 60])
             .enter().append("g")
-            .attr("class", "legend_block");
-        .append("text")
-            .text("Percent of female college students")
-            .attr("x", svgWidth - 130)
-            .attr("y", 38);
+            .attr("class", "legend_block")
+        
+    // d3.select(".legend").append("text")
+    //     .text("Percent of female college students")
+    //     .attr("x", svgWidth - 130)
+    //     .attr("y", 38);
 
     var ls_w = 20, ls_h = 20;
 
     legend.append("rect")
         .attr("x", svgWidth - 130)
-        .attr("y", function(d, i){ return (i*ls_h) + 2*ls_h;})
+        .attr("y", function(d, i){ return (i*ls_h) + 2*ls_h +10;})
         .attr("width", ls_w)
         .attr("height", ls_h)
         .style("fill", function(d, i) { return color(d); })
@@ -316,7 +344,7 @@ d3.queue()
 
     legend.append("text")
         .attr("x", svgWidth - 100)
-        .attr("y", function(d, i){ return (i*ls_h) + ls_h + 40;})
+        .attr("y", function(d, i){ return (i*ls_h) + ls_h + 50;})
         .text(function(d, i){ return legend_labels[i]; })
         .attr("class", "legend-text");
 
@@ -356,22 +384,22 @@ d3.queue()
     svg.append("text")
         .attr("id", "birth-control-access")
         .text(String(contraceptiveSlider.value) + "% birth control access")
-        .attr("x", 50)
+        .attr("x", 30)
         .attr("y", 500)
         .style("font-size", "16pt");
 
     svg.append("text")
         .attr("id", "years-after-access-achieved")
-        .text("Data for " + String(yearsSlider.value) + " year(s) after access achieved")
-        .attr("x", 50)
+        .text("Displaying data for " + String(yearsSlider.value) + " year(s) after access achieved")
+        .attr("x", 30)
         .attr("y", 530)
-        .style("font-size", "16pt");
+        .style("font-size", "14pt");
 
     contraceptiveSlider.oninput = function() {
         d3.select("#birth-control-access")
             .text(String(contraceptiveSlider.value) + "% birth control access");
         svg.select("#beforeFirst").text("Achieved the selected (" + contraceptiveSlider.value + "%) birth control");
-        svg.select("#FirstYear").text("pervasiveness in " + firstYear[country.id]);
+        svg.select("#FirstYear").text("pervasiveness in " + firstYear[currentCountry]);
         updateFirstYear(contraceptiveSlider.value);
     };
 
@@ -379,13 +407,19 @@ d3.queue()
      	d3.select("#years-after-access-achieved")
             .text("Data for " + String(yearsSlider.value) + " year(s) after access achieved");
         svg.select("#beforeFirst").text("Achieved the selected (" + contraceptiveSlider.value + "%) birth control");
-        svg.select("#FirstYear").text("pervasiveness in " + firstYear[country.id]);
+        svg.select("#FirstYear").text("pervasiveness in " + firstYear[currentCountry]);
         updateEnrollmentValues(yearsSlider.value);
     }
 
     updateFirstYear(contraceptiveSlider.value);
 })
 </script>
+<div id="firstLabel">
+Percent Access to Birth Control
+</div>
+<div id="secondLabel">
+Years After Access Is Achieved
+</div>
 
 <!--     <br>
     <div id="pervasiveShow" class="showingSelections">
