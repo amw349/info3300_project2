@@ -133,7 +133,7 @@ function updateFirstYear(contraceptivePercent) {
 	});
     // TODO: Do we need this here? I see why. Cause we need to call it initially, but wouldnt it be bettter to call it outside this 
     // function since this is constantly being called each time the contraceptive slider moves?
-    updateEnrollmentValues(0);
+    updateEnrollmentValues(yearsSlider.value);
 }
 
 function updateEnrollmentValues(yearsPlus) {
