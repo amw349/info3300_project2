@@ -119,38 +119,57 @@ while(d2-d < ms);
 }
     
 function yearShow() {
-        var theYears = [0, 5, 7, 10, 15];
-    for (year = 0; year < theYears.length; year++) {
-        var yearsPlus = parseInt(theYears[year]);
-        var toWord;
+    console.log("called yearShow");
+    var inc = 0
+    var max = 6;
+    var delay = 1000;
+    var toWord = 500;
+
         
-        // replacing 'after XX years' svg element
-        var first = "After ";
-        if (theYears[year] == 5) {
-            toWord = "Five";
-        }
-        else if (theYears[year] == 10) {
-            toWord = "Ten";
-        }
-        else if (theYears[year] == 7) {
-            toWord = "Seven";
-        }
-        else if (theYears[year] == 15) {
-            toWord = "Fifteen";
-        }
-        else {
-        	toWord = "Zero";
-        }
-        var second = first.concat(toWord);
-        var third = " Years"
-        var last = second.concat(third)
-        console.log("trying to display: " + last);
-        document.getElementById("showingYears").innerHTML = "trying";
+        function timeoutLoop() {
+            console.log("inside timeoutloop");
+            var theYears = [0, 5, 7, 10, 15];
+
+            // replacing 'after XX years' svg element
+            var first = "After ";
+            if (theYears[inc] == 5) {
+                toWord = "Five";
+            }
+            else if (theYears[inc] == 10) {
+                toWord = "Ten";
+            }
+            else if (theYears[inc] == 7) {
+                toWord = "Seven";
+            }
+            else if (theYears[inc] == 15) {
+                toWord = "Fifteen";
+            }
+            else if (theYears[inc] == 0) {
+                toWord = "Zero";
+            }
+            var second = first.concat(toWord);
+            var third = " Years"
+            var last = second.concat(third)
+            if (toWord == 500){
+                document.getElementById("showingYears").innerHTML = "";
+            }
+            else {
+                document.getElementById("showingYears").innerHTML = last;
+            }
+                console.log("inc: " + inc);
+                console.log("max: " + max);
+                if (++inc < max) {
+                    setTimeout(timeoutLoop, delay)
+                }
+            }
+    console.log("first timeout");
+    setTimeout(timeoutLoop, delay)
 }
 
 function useValues(yearDictionary) {
     console.log("called useValues");
     yearShow()
+    console.log("after yearShow");
     // looping through the years we want to display
     var theYears = [0, 5, 7, 10, 15];
     for (year = 0; year < theYears.length; year++) {
@@ -262,7 +281,7 @@ d3.queue()
 
     contraceptiveSlider.oninput = function() {
         console.log(contraceptiveSlider.value);
-        console.log("fuck me" + contraceptiveSlider.value);
+        console.log("slider val:" + contraceptiveSlider.value);
         document.getElementById("showingYears").innerHTML = String(contraceptiveSlider.value);
         takeValue(contraceptiveSlider.value);
      };
