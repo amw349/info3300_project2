@@ -193,14 +193,14 @@ function useValues(yearDictionary) {
 
         for(key in yearDictionary){
         	var yearAchieved = yearDictionary[key];
-        	var yearSelected = yearAchieved - 1990 + yearsPlus;
-        	console.log(key);
-        	console.log(yearAchieved);
-        	console.log(yearSelected);
-        	console.log(enrollData[key]);
-        	if (enrollData[key] != undefined && yearSelected < enrollData[key].length){
-        		var enrollPercent = enrollData[key][yearSelected];
-        		console.log(enrollPercent)
+        	var yearIndex = yearAchieved - 1990 + yearsPlus;
+        	//console.log(key);
+        	//console.log(yearAchieved);
+        	//console.log(yearSelected);
+        	//console.log(enrollData[key]);
+        	if (enrollData[key] != undefined && yearIndex < enrollData[key].length){
+        		var enrollPercent = enrollData[key][yearIndex];
+        		//console.log(enrollPercent)
     		}
         }
 
