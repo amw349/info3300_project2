@@ -111,14 +111,15 @@ var color = d3.scaleQuantize()
                    "hsl(0, 100%, 50%)","hsl(0, 100%, 40%)", "hsl(0, 100%, 30%)","hsl(0, 100%, 20%)","hsl(0, 100%, 10%)"]);
 
 function updateFirstYear(contraceptivePercent) {
+    // first year the contraceptive percentage was achieved in each country.
 	firstYear = {};
 
 	var percentageAchieved;
-	contraData.forEach(function(d) {
+    contraData.forEach(function (d) {
 		percentageAchieved = false;
 		var year = 0;
 		while (!percentageAchieved && year < 25){
-			if (d.Rate[year] > contraceptivePercent){
+			if (d.Rate[year] >= contraceptivePercent){
 				percentageAchieved = true;
 			};
 			year += 1;
@@ -130,12 +131,14 @@ function updateFirstYear(contraceptivePercent) {
 			firstYear[d.ID] = 0;
 		}
 	});
+    // TODO: Do we need this here? I see why. Cause we need to call it initially, but wouldnt it be bettter to call it outside this 
+    // function since this is constantly being called each time the contraceptive slider moves?
     updateEnrollmentValues(0);
 }
 
 function updateEnrollmentValues(yearsPlus) {
 	enrollmentValues = {}
-	for(key in firstYear){
+	for (key in firstYear){
         var yearAchieved = firstYear[key];
     	var yearIndex = yearAchieved - 1990 + yearsPlus;
         if (enrollData[key] != undefined){
@@ -185,7 +188,7 @@ d3.queue()
 	geoData = worldData;
 	contraData = csvData;
 
-	csvData2.forEach(function(d) {
+	csvData2.forEach(function (d) {
 		enrollData[d.ID] = d.Rate;
 	})
 
@@ -220,7 +223,7 @@ d3.queue()
         .enter()
         .append("path")
         .attr("class", "country")
-        .attr("id", function(d) { return d.properties.name; })
+        .attr("id", function (d) { return d.properties.name; })
         .attr("d", function (country) {
             if(country.properties.name != "Antarctica")
         	return pathGenerator(country);
@@ -255,13 +258,6 @@ d3.queue()
     var slider = d3.select("body")
             .append("div")
             .attr("id", "slider");
-    
-    slider.append("text")
-        .attr("x", "260")
-        .attr("y", "40")
-        .attr("font-family","sans-serif")
-        .attr("font-size", "20")
-        .attr("fill", "white")
 
     slider.append("input")            
             .attr("type", "range")
@@ -289,25 +285,42 @@ d3.queue()
                 value = this.value;
             });
 
-    var contraceptiveSlider = document.getElementById("contraceptiveSlider")
-    var yearsSlider = document.getElementById("yearsSlider")
+    var contraceptiveSlider = document.getElementById("contraceptiveSlider");
+    var yearsSlider = document.getElementById("yearsSlider");
+
+    svg.append("text")
+        .attr("id", "birth-control-access")
+        .text(String(contraceptiveSlider.value) + "% birth control access")
+        .attr("x", 50)
+        .attr("y", 500)
+        .style("font-size", "16pt");
+
+    svg.append("text")
+        .attr("id", "years-after-access-achieved")
+        .text("Data for " + String(yearsSlider.value) + " year(s) after access achieved")
+        .attr("x", 50)
+        .attr("y", 530)
+        .style("font-size", "16pt");
 
     contraceptiveSlider.oninput = function() {
-
-    document.getElementById("pervasiveShow").innerHTML = "Displaying data for " + String(contraceptiveSlider.value) + "% birth control access";
+        // document.getElementById("pervasiveShow").innerHTML = "Displaying data for " + String(contraceptiveSlider.value) + "% birth control access";
+        d3.select("#birth-control-access")
+            .text(String(contraceptiveSlider.value) + "% birth control access")
         updateFirstYear(contraceptiveSlider.value);
-     };
+    };
 
     yearsSlider.oninput = function() {
-        document.getElementById("yearsAfterShow").innerHTML = "Displaying data for " + String(yearsSlider.value) + " years after access achieved";
-     	updateEnrollmentValues(yearsSlider.vaule)
+        // document.getElementById("yearsAfterShow").innerHTML = "Displaying data for " + String(yearsSlider.value) + " years after access achieved";
+     	d3.select("#years-after-access-achieved")
+            .text("Data for " + String(yearsSlider.value) + " year(s) after access achieved")
+        updateEnrollmentValues(yearsSlider.value)
     }
 
     updateFirstYear(contraceptiveSlider.value);
 })
 </script>
 
-    <br>
+<!--     <br>
     <div id="pervasiveShow" class="showingSelections">
         Displaying data for 0% birth control access
     </div>
@@ -316,6 +329,6 @@ d3.queue()
     </div>
     
     </div>
-    <br><br>
+    <br><br> -->
 </body>
 </html>
