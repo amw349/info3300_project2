@@ -83,6 +83,7 @@ var pathGenerator = d3.geoPath().projection(projection);
 
 var geoData;
 var contraData;
+var enrollData = {};
 var countries;
 var firstYear;
 
@@ -99,10 +100,10 @@ function takeValue(newValue) {
 			year += 1;
 		};
 		if(percentageAchieved){
-			firstYear[d.Country] = 1990 + year;
+			firstYear[d.ID] = 1990 + year;
 		}
 		else {
-			firstYear[d.Country] = 0;
+			firstYear[d.ID] = 0;
 		}
 	});
     console.log("calling usevalues hopefully");
@@ -152,15 +153,35 @@ function useValues(yearDictionary) {
 
         // (needs loop) for each country in dict, take value, add the yearsPlus int, and find country's
         // enrollment ratio 
-
+        // console.log(yearDictionary)
+        // for(key in yearDictionary){
+        // 	var yearAchieved = yearDictionary[key];
+        // 	console.log(key);
+        // 	console.log(yearAchieved);
+        // 	console.log(enrollData[key])
+        // 	//console.log(enrollData[key][yearAchieved - 1990 + yearsPlus])
+        // }
 
         // put that ratio in the map
+
+        for(key in yearDictionary){
+        	var yearAchieved = yearDictionary[key];
+        	var yearSelected = yearAchieved - 1990 + yearsPlus;
+        	console.log(key);
+        	console.log(yearAchieved);
+        	console.log(yearSelected);
+        	console.log(enrollData[key]);
+        	if (enrollData[key] != undefined && yearSelected < enrollData[key].length){
+        		var enrollPercent = enrollData[key][yearSelected];
+        		console.log(enrollPercent)
+    		}
+        }
 
 
 
         // pausing for 5 seconds before displaying the next year
         // (using wait function from endmemo.com)
-        wait(5000);
+        //wait(5000);
     } // end loop
 }
 
@@ -170,14 +191,12 @@ function parse(row){
     // version 1:
     var rate = []
     for (i in row) {
-        if (i != "Country") {
+        if (i != "Country" && i != "ID") {
             row[i] = Number(row[i]);
             rate.push(Number(row[i]));
         }
     }
-    console.log(row);
     row["Rate"] = rate;
-    console.log(row);
     return row
 }
 
@@ -187,10 +206,15 @@ function parse(row){
 d3.queue()
 .defer(d3.json, "world.json")
 .defer(d3.csv, "birth_control_country_data.csv?v1", parse)
-.await(function (error, worldData, csvData) {
+.defer(d3.csv, "enrollment.csv?v2", parse)
+.await(function (error, worldData, csvData, csvData2) {
 
 	geoData = worldData;
 	contraData = csvData;
+
+	csvData2.forEach(function(d) {
+		enrollData[d.ID] = d.Rate;
+	})
 
     var svg = d3.select("#contentWrapper")
         .append("svg")
