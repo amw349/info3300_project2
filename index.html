@@ -282,6 +282,12 @@ d3.queue()
         .attr("y", 28)
         .style("font-size", "18pt");
 	
+    svg.append("text")
+	    .attr("id", "FirstYear")
+	    .attr("x", 10)
+	    .attr("y", 48)
+	    .style("font-size", "18pt");
+
 	countries = topojson.feature(geoData, geoData.objects.units);
 	svg.append("g")
         .attr("id", "countries")
@@ -298,7 +304,7 @@ d3.queue()
         .on("mouseover", function(country){
             this.style.opacity = 0.7
         	svg.select("#CountryName").text(country.properties.name);
-            // svg.select("#FirstYear").text(firstYear[country.properties.name])
+            svg.select("#FirstYear").text(firstYear[country.id])
         })
         .on("mouseout", function(country){
             this.style.opacity = 1;
@@ -358,11 +364,7 @@ d3.queue()
      }
 
 
-    // svg.append("text")
-    // .attr("id", "FirstYear")
-    // .attr("x", 10)
-    // .attr("y", 48)
-    // .style("font-size", "18pt");
+    
 
     // svg.append("text")
     // .attr("id", "yearsAfter")
