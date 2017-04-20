@@ -127,14 +127,6 @@ function updateFirstYear(newValue) {
     updateEnrollmentValues(0);
 }
 
-// wait function from endmemo.com
-function wait(ms)
-{
-    var d = new Date();
-    var d2 = null;
-    do { d2 = new Date(); }
-    while (d2-d < ms);
-}
     
 
 function updateEnrollmentValues(yearsPlus) {
@@ -161,50 +153,6 @@ function updateMap() {
 
 }
 
-function useValues(yearDictionary) {
-    console.log("called useValues");
-    yearShow()
-    console.log("after yearShow");
-    // looping through the years we want to display
-    var theYears = [0, 5, 7, 10, 15];
-    for (year = 0; year < theYears.length; year++) {
-        var yearsPlus = parseInt(theYears[year]);
-        
-
-        // (needs loop) for each country in dict, take value, add the yearsPlus int, and find country's
-        // enrollment ratio 
-        // console.log(yearDictionary)
-        // for(key in yearDictionary){
-        // 	var yearAchieved = yearDictionary[key];
-        // 	console.log(key);
-        // 	console.log(yearAchieved);
-        // 	console.log(enrollData[key])
-        // 	//console.log(enrollData[key][yearAchieved - 1990 + yearsPlus])
-        // }
-
-        // put that ratio in the map
-
-        for(key in firstYear){
-        	var yearAchieved = firstYear[key];
-        	var yearIndex = yearAchieved - 1990 + yearsPlus;
-        	//console.log(key);
-        	//console.log(yearAchieved);
-        	//console.log(yearSelected);
-        	//console.log(enrollData[key]);
-        	if (enrollData[key] != undefined && yearIndex < enrollData[key].length){
-        		var enrollPercent = enrollData[key][yearIndex];
-        		//console.log(enrollPercent)
-    		}
-        }
-
-
-
-        // pausing for 5 seconds before displaying the next year
-        // (using wait function from endmemo.com)
-
-        wait(1000);
-    } // end loop
-}
 
 function parse(row){
     // version 1:
@@ -328,15 +276,6 @@ d3.queue()
      	console.log("yearsSlider val:" + yearsSlider.value);
      }
 
-
-    
-
-    // svg.append("text")
-    // .attr("id", "yearsAfter")
-    // .attr("x", 80)
-    // .attr("y", 600)
-    // .style("font-size", "30pt");
-    // svg.select("#yearsAfter").text("After Fifteen Years");
     updateFirstYear(contraceptiveSlider.value);
 
 })
