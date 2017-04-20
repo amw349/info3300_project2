@@ -89,6 +89,7 @@ var firstYear;
 
 function takeValue(newValue) {
 	firstYear = {};
+
 	var percentageAchieved;
 	contraData.forEach(function(d) {
 		percentageAchieved = false;
@@ -113,16 +114,14 @@ function takeValue(newValue) {
 // wait function from endmemo.com
 function wait(ms)
 {
-var d = new Date();
-var d2 = null;
-do { d2 = new Date(); }
-while(d2-d < ms);
+    var d = new Date();
+    var d2 = null;
+    do { d2 = new Date(); }
+    while (d2-d < ms);
 }
-
-function useValues(yearDictionary) {
-    console.log("called useValues");
-    // looping through the years we want to display
-    var theYears = [0, 5, 7, 10, 15];
+    
+function yearShow() {
+        var theYears = [0, 5, 7, 10, 15];
     for (year = 0; year < theYears.length; year++) {
         var yearsPlus = parseInt(theYears[year]);
         var toWord;
@@ -141,15 +140,24 @@ function useValues(yearDictionary) {
         else if (theYears[year] == 15) {
             toWord = "Fifteen";
         }
-        else if (theYears[year] ==0) {
+        else {
         	toWord = "Zero";
         }
         var second = first.concat(toWord);
         var third = " Years"
         var last = second.concat(third)
         console.log("trying to display: " + last);
-        document.getElementById("showingYears").textContent = last;
+        document.getElementById("showingYears").innerHTML = "trying";
+}
 
+function useValues(yearDictionary) {
+    console.log("called useValues");
+    yearShow()
+    // looping through the years we want to display
+    var theYears = [0, 5, 7, 10, 15];
+    for (year = 0; year < theYears.length; year++) {
+        var yearsPlus = parseInt(theYears[year]);
+        
 
         // (needs loop) for each country in dict, take value, add the yearsPlus int, and find country's
         // enrollment ratio 
@@ -181,11 +189,10 @@ function useValues(yearDictionary) {
 
         // pausing for 5 seconds before displaying the next year
         // (using wait function from endmemo.com)
-        //wait(5000);
+
+        wait(1000);
     } // end loop
 }
-
-
 
 function parse(row){
     // version 1:
@@ -229,33 +236,32 @@ d3.queue()
 	
 	countries = topojson.feature(geoData, geoData.objects.units);
 	svg.append("g")
-    .attr("id", "countries")
-    .selectAll("path.country")
-    .data(countries.features)
-    .enter()
-    .append("path")
-    .attr("class", "country")
-    .attr("id", function(d) { return d.properties.name; })
-    .attr("d", function (country) {
-        if(country.properties.name != "Antarctica")
-    	return pathGenerator(country);
-    })
-    .on("mouseover", function(country){
-        	this.style.opacity = 0.7
-        	svg.select("#CountryName").text(country.properties.name);
-        	// svg.select("#FirstYear").text(firstYear[country.properties.name])
-
+        .attr("id", "countries")
+        .selectAll("path.country")
+        .data(countries.features)
+        .enter()
+        .append("path")
+        .attr("class", "country")
+        .attr("id", function(d) { return d.properties.name; })
+        .attr("d", function (country) {
+            if(country.properties.name != "Antarctica")
+        	return pathGenerator(country);
         })
-    .on("mouseout", function(country){
-        	this.style.opacity = 1;
-    	})
-    .style("fill", function(d) {
-    	//CHANGE use data from contraData to get different shadings
-    	//something like
-    	//return color (pairRateWithId[d.id]);
-    	//https://suffenus.wordpress.com/2014/01/07/making-interactive-maps-with-d3-for-total-beginners/
-    	return "light grey";
-    });
+        .on("mouseover", function(country){
+            this.style.opacity = 0.7
+        	svg.select("#CountryName").text(country.properties.name);
+            // svg.select("#FirstYear").text(firstYear[country.properties.name])
+        })
+        .on("mouseout", function(country){
+            this.style.opacity = 1;
+        })
+        .style("fill", function(d) {
+        	//CHANGE use data from contraData to get different shadings
+        	//something like
+        	//return color (pairRateWithId[d.id]);
+        	//https://suffenus.wordpress.com/2014/01/07/making-interactive-maps-with-d3-for-total-beginners/
+        	return "light grey";
+        });
 
     var slider = d3.select("body")
             .append("div")
@@ -279,6 +285,8 @@ d3.queue()
 
     contraceptiveSlider.oninput = function() {
         console.log(contraceptiveSlider.value);
+        console.log("fuck me" + contraceptiveSlider.value);
+        document.getElementById("showingYears").innerHTML = String(contraceptiveSlider.value);
         takeValue(contraceptiveSlider.value);
      };
 
