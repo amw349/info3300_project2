@@ -232,8 +232,18 @@ d3.queue()
         .on("mouseover", function(country){
             this.style.opacity = 0.7
         	svg.select("#CountryName").text(country.properties.name);
-            svg.select("#beforeFirst").text("Achieved selected birth control");
+            if (firstYear[country.id] == 0) {
+                svg.select("#beforeFirst").text("Never achieved the selected");
+                svg.select("#FirstYear").text("level of birth control access");
+            }
+            else if (typeof(firstYear[country.id]) != 'number') {
+            svg.select("#beforeFirst").text("Did not provide birth control");
+            svg.select("#FirstYear").text("access statistics");
+            }
+            else {
+            svg.select("#beforeFirst").text("Achieved " + contraceptiveSlider.value + "% birth control");
             svg.select("#FirstYear").text("pervasiveness in " + firstYear[country.id]);
+            }
         })
         .on("mouseout", function(country){
             this.style.opacity = 1;
@@ -280,8 +290,9 @@ d3.queue()
     var yearsSlider = document.getElementById("yearsSlider")
 
     contraceptiveSlider.oninput = function() {
-        // console.log("contraceptiveSlider val:" + contraceptiveSlider.value);
-        document.getElementById("pervasiveShow").innerHTML = "You selected " + String(contraceptiveSlider.value) + "% birth control access";
+
+    // console.log("contraceptiveSlider val:" + contraceptiveSlider.value);
+    document.getElementById("pervasiveShow").innerHTML = "Displaying data for " + String(contraceptiveSlider.value) + "% birth control access";
         updateFirstYear(contraceptiveSlider.value);
      };
 
@@ -300,8 +311,10 @@ d3.queue()
 </script>
     <br>
     <div id="pervasiveShow" class="showingSelections">
+        Displaying data for 0% birth control access
     </div>
     <div id="yearsAfterShow" class="showingSelections">
+        Displaying data for 0 years after access achieved
     </div>
     
     </div>
