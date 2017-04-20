@@ -114,7 +114,7 @@ function updateFirstYear(newValue) {
 		}
 	});
     console.log("calling usevalues hopefully");
-    updateEnrollmentValues(yearsSlider.value);
+    updateEnrollmentValues(0);
 }
 
 // wait function from endmemo.com
@@ -189,6 +189,7 @@ function updateEnrollmentValues(yearsPlus) {
 	        	}
     		}
         }
+    console.log(enrollmentValues["USA"])
     updateMap();
 }
 
