@@ -57,6 +57,18 @@
             color: white;
             box-shadow: 5px 10px 50px white
         }
+        div.tooltip {
+          position: absolute;           
+          text-align: center;           
+          width: 150px;                  
+          height: 25px;                 
+          padding: 2px;             
+          font-size: 10px;     
+          background: #FFFFE0;
+          border: 1px;      
+          border-radius: 8px;           
+          pointer-events: none; 
+        }
     </style>
 </head>
 <body>
@@ -214,6 +226,10 @@ d3.queue()
 	    .attr("y", 68)
 	    .style("font-size", "18pt");
 
+    var tooltip = d3.select("body").append("div")
+    .attr("class", "tooltip")
+    .style("opacity", 0);
+
 	countries = topojson.feature(geoData, geoData.objects.units);
 	svg.append("g")
         .attr("id", "countries")
@@ -242,9 +258,25 @@ d3.queue()
             svg.select("#beforeFirst").text("Achieved the selected (" + contraceptiveSlider.value + "%) birth control");
             svg.select("#FirstYear").text("pervasiveness in " + firstYear[country.id]);
             }
+
+            //tooltip
+            tooltip.style("opacity", 1)
         })
         .on("mouseout", function(country){
             this.style.opacity = 1;
+            tooltip.style("opacity", 0)
+        })
+        .on("mousemove", function(country){
+            if(typeof(enrollmentValues[country.id]) != 'undefined' ){
+                tooltip.text(country.properties.name + ':\n'+ 'Enrollment percentage: ' + String(enrollmentValues[country.id]).substring(0,4) + '%')
+                .style("left", (d3.event.pageX - 34) + "px")
+                .style("top", (d3.event.pageY - 12) + "px");
+            }
+            else{
+                tooltip.text(country.properties.name + ':\n'+ "no enrollment statistics provided for given year")
+                .style("left", (d3.event.pageX - 34) + "px")
+                .style("top", (d3.event.pageY - 12) + "px");
+            }
         })
         .style("fill", function (d) {
         	return "light grey";
