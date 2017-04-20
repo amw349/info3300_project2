@@ -145,8 +145,10 @@ function updateEnrollmentValues(yearsPlus) {
         	if (enrollData[key] != undefined){
         		console.log(yearIndex)
         		if (yearIndex >= 0 && yearIndex < enrollData[key].length){
-	        		var enrollPercent = enrollData[key][yearIndex];
-	        		enrollmentValues[key] = enrollPercent;
+	        		if (enrollData[key][yearIndex] > 0){
+		        		var enrollPercent = enrollData[key][yearIndex];
+		        		enrollmentValues[key] = enrollPercent;
+		        	}
 	        	}
 	        	else {
 	        		enrollmentValues[key] = -1;
