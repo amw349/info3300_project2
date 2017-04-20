@@ -187,8 +187,10 @@ function parse(row){
     return row
 }
 
-//code based from lecture and http://www.tnoda.com/blog/2013-12-07
+//map code based from lecture and http://www.tnoda.com/blog/2013-12-07
 //data from https://raw.githubusercontent.com/yaph/d3-geomap/master/src/topojson/world/countries.json
+
+//tooltip code based from http://bl.ocks.org/KoGor/5685876
 
 d3.queue()
 .defer(d3.json, "world.json")
