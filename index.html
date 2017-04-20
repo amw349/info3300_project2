@@ -299,12 +299,16 @@ d3.queue()
             .data([0, 1, 3, 5, 10, 15, 25, 40, 60])
             .enter().append("g")
             .attr("class", "legend_block");
+        .append("text")
+            .text("Percent of female college students")
+            .attr("x", svgWidth - 130)
+            .attr("y", 38);
 
     var ls_w = 20, ls_h = 20;
 
     legend.append("rect")
         .attr("x", svgWidth - 130)
-        .attr("y", function(d, i){ console.log(i); return (i*ls_h) + 2*ls_h;})
+        .attr("y", function(d, i){ return (i*ls_h) + 2*ls_h;})
         .attr("width", ls_w)
         .attr("height", ls_h)
         .style("fill", function(d, i) { return color(d); })
@@ -375,7 +379,7 @@ d3.queue()
      	d3.select("#years-after-access-achieved")
             .text("Data for " + String(yearsSlider.value) + " year(s) after access achieved");
         svg.select("#beforeFirst").text("Achieved the selected (" + contraceptiveSlider.value + "%) birth control");
-            svg.select("#FirstYear").text("pervasiveness in " + firstYear[country.id]);
+        svg.select("#FirstYear").text("pervasiveness in " + firstYear[country.id]);
         updateEnrollmentValues(yearsSlider.value);
     }
 
