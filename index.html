@@ -9,7 +9,7 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
     <style>
         body { font-family: 'Alegreya Sans', Calibri, sans-serif; margin: auto; background-color: #444444;}
-        svg { border: solid #ccc 1px; background-color: white; box-shadow: 5px 10px 50px white;}
+        svg { /*border: solid #ccc 1px;*/ background-color: white; box-shadow: 5px 10px 50px white;}
         path.country { fill: #ccc; stroke: #888;; }
         #contentWrapper {
             margin: auto;
@@ -24,19 +24,23 @@
             color: white;
             font-size: 25px;   
         }
-        #sliders{
+        #slidersContainer{
             display: block;
             margin: auto;
-            margin-bottom: 5%;
+            margin-bottom: 2.5%;
         }
-        #contraceptiveSlider {
+        .sliders {
             display: inline-block;
             margin: auto;
+        } 
+        .sliders.years {
+            margin-left: 40px;
         }
-        #yearsSlider {
-            display: inline-block;
-            margin: auto;
-            margin-left: 20px;
+        input#contraceptiveSlider{
+            margin-top: 5%;
+        }
+        input#yearsSlider{
+            margin-top: 5%;
         }
         #pervasiveShow {
             position: absolute;
@@ -56,7 +60,7 @@
         }
         h1 {
             color: white;
-            box-shadow: 5px 10px 50px white
+            box-shadow: 5px 10px 50px white;
         }
         div.tooltip {
           position: absolute;           
@@ -228,7 +232,7 @@ d3.queue()
 
     var sliders = d3.select("#contentWrapper")
         .append("div")
-        .attr("id", "sliders");
+        .attr("id", "slidersContainer");
 
     var svg = d3.select("#contentWrapper")
         .append("svg")
@@ -354,36 +358,43 @@ d3.queue()
         .text(function(d, i){ return legend_labels[i]; })
         .attr("class", "legend-text");
 
-    sliders.append("input")            
+    sliders.append("div")
+        .attr("class", "sliders contraceptive")
+        .append("text")
+            .text("Percent Access to Birth Control")
+        .append("br")
+
+    d3.select(".contraceptive").append("input")            
             .attr("type", "range")
             .attr("name", "contraceptiveSlider")
+            .attr("id", "contraceptiveSlider")
             .attr("min", "0")
             .attr("max", "90")
             .attr("value", "0") // default/starting value
             .attr("step", "1")
-            .attr("id", "contraceptiveSlider")
             .style("width", "420px")
             .on("input", function() { 
                 value = this.value;
             })
-            .append("text")
-                .text("Percent Access to Birth Control")
 
+    sliders.append("div")
+        .attr("class", "sliders years")
+        .append("text")
+            .text("Years After Access is Achieved")
+        .append("br")
 
-    sliders.append("input")            
+    d3.select(".years").append("input")            
             .attr("type", "range")
             .attr("name", "yearsSlider")
+            .attr("id", "yearsSlider") 
             .attr("min", "0")
             .attr("max", "10")
             .attr("value", "0") // default/starting value
             .attr("step", "1")
-            .attr("id", "yearsSlider")
             .style("width", "420px")
             .on("input", function() { 
                 value = this.value;
             })
-            .append("text")
-                .text("Years After Access Is Achieved")
 
     var contraceptiveSlider = document.getElementById("contraceptiveSlider");
     var yearsSlider = document.getElementById("yearsSlider");
