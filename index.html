@@ -7,10 +7,21 @@
     <script src="https://d3js.org/d3.v4.min.js"></script>
     <script src="http://d3js.org/topojson.v2.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=PT+Sans+Narrow" rel="stylesheet">
     <style>
-        body { font-family: 'Alegreya Sans', Calibri, sans-serif; margin: auto; background-color: #444444;}
-        svg { /*border: solid #ccc 1px;*/ background-color: white; box-shadow: 5px 10px 50px white;}
+        body { font-family: 'PT Sans Narrow', sans-serif;
+             margin: auto; background-color: #444444;}
+        svg { background-color: white; }
         path.country { fill: #ccc; stroke: #888;; }
+        h1 {
+            font-family: 'PT Sans Narrow', sans-serif;
+            padding-top: 5%;
+            padding-bottom: 5%;
+            margin: 0;
+            color: white;
+            font-size: 36px;
+            font-weight: 500;
+        }
         #contentWrapper {
             margin: auto;
             text-align: center;
@@ -18,11 +29,16 @@
             font-size: 20px;
             margin-bottom: 30px;
         }
-        #explanationText {
-            margin: auto;
+        #about {
+            margin-right: 5%;
+            margin-left: 5%; 
             text-align: center;
             color: white;
             font-size: 25px;   
+        }
+        #about p {
+            margin: 0% 20% 2.5% 20%;
+            padding: 0% 2.5% 0% 2.5%;       
         }
         #slidersContainer{
             display: block;
@@ -58,10 +74,6 @@
             display: block;
             padding-left: 10%;
         }
-        h1 {
-            color: white;
-            box-shadow: 5px 10px 50px white;
-        }
         div.tooltip {
           position: absolute;           
           text-align: center;           
@@ -69,8 +81,8 @@
           height: 25px;                 
           padding: 2px;             
           font-size: 10px;     
-          background: #FFFFE0;
-          color: #000000;
+          background: #000000;
+          color: #FFFFFF;
           border: 1px;      
           border-radius: 8px;           
           pointer-events: none; 
@@ -95,35 +107,23 @@
 
 <div id="contentWrapper">
     <div id="header">
-        <h1><br>
-            Correlation Between Birth Control Access and the Percentage of College <br>
-            Students Who Are Female
+        <h1>
+            Correlation Between Birth Control Access per Country and the Percentage of College <br>
+            Students from that Country Who Are Female 
         </h1>
     </div>
-    <br>
-    <br>
-    <div id="explanationText">
-        The graph above shows the relationship between access to contraceptives within a country and the percentage of <br>
-        college students (from that country) who are female.
-        <br><br>
-        Use the top slider to select a percentage of people (in each country) who have access to birth control, and we'll find the years that every country on earth 
-        <br>
-        achieved that level of access (it'll be different for every country).
-        <br>
-        <br>
-        Then, use the second slider to see how 
-        <br>
-        <br>
-        We'll display the percentage of college students from that country who are female. We'll do this <br>
-        for the selected number of years after each country achieves the selected birth control prevalence. The color scheme is explained by the legend on the graph.
-        <br><br>
-        If we don't have the data for a given country (either because it doesn't exist in the world bank, or because the country never
-        <br>
-        achieved that level of contraceptive ubiquity, or because the year doesn't exist yet), then that country will stay grey. Have fun!
-        <br>
-        <br>
-        <br>
-    </div>
+    <div id="about">
+        <p>
+            The graph below shows the relationship between access to contraceptives within a country and the percentage of
+            college students (from that country) who are female, X amount of years after that access percentage is achieved.
+        </p>
+        <p>
+            Use the top slider to select a percentage of people (in each country) who have access to birth control, and we'll find the years that every country on earth achieved that level of access (it'll be different for every country).
+        </p>
+        <p>
+            Then, use the second slider to see how we'll display the percentage of college students from that country who are female. We'll do this for the selected number of years after each country achieves the selected birth control prevalence. The color scheme is explained by the legend on the graph.
+        </p>
+    <div>
 
 <script>
 
