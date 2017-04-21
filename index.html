@@ -220,8 +220,8 @@ function parse(row){
 
 d3.queue()
 .defer(d3.json, "world.json")
-.defer(d3.csv, "birth_control_country_data.csv?v1", parse)
-.defer(d3.csv, "enrollment.csv?v2", parse)
+.defer(d3.csv, "birth_control_country_data.csv", parse)
+.defer(d3.csv, "enrollment.csv", parse)
 .await(function (error, worldData, csvData, csvData2) {
 
 	geoData = worldData;
