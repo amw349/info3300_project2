@@ -139,7 +139,7 @@ var countries;
 var firstYear;
 var enrollmentValues;
 
-var currentCountry;
+var currentCountry = "";
 
 var color = d3.scaleThreshold()
     .domain([0, .25, 2, 5, 10, 15, 25, 40, 60])
@@ -241,6 +241,7 @@ d3.queue()
         .attr("width", svgWidth);
 
     svg.append("text")
+        .text("Hover a country")
         .attr("id", "CountryName")
         .attr("x", 20)
         .attr("y", 38)
@@ -417,7 +418,10 @@ d3.queue()
     contraceptiveSlider.oninput = function() {
         d3.select("#birth-control-access")
             .text(String(contraceptiveSlider.value) + "% birth control access");
-        if (firstYear[currentCountry] == 0) {
+        if(currentCountry == ""){
+            svg.select("#CountryName").text("Hover a country");
+        }
+        else if (firstYear[currentCountry] == 0) {
                 svg.select("#beforeFirst").text("Never achieved the selected");
                 svg.select("#FirstYear").text("level of birth control access");
             }
